@@ -1,27 +1,21 @@
 package app.funfinder.roomservice;
 
-import app.funfinder.roomservice.presentation.RoomServiceConsumer;
 import app.funfinder.roomservice.presentation.RoomServiceProducer;
-import app.funfinder.roomservice.utils.kafka.KafkaTopics;
+import app.funfinder.roomservice.domain.kafka.KafkaTopics;
 import app.funfinder.protobuf.RoomServiceProto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
 class RoomServiceApplicationTests {
 
+    //TODO this is a sample test to send proto messages and check they works, use debug to verify that then remove this test
 
     @Autowired
     private RoomServiceProducer producer;
-    @Autowired
-    private RoomServiceConsumer consumer;
-
 
     @Test
     public void consumeCreateRoomMessage() throws Exception
@@ -33,12 +27,25 @@ class RoomServiceApplicationTests {
                 .setUserId("aled94")
                 .setLatitude(0L)
                 .setLongitude(0L)
+                .setRangeInMeters(3000)
                 .build();
 
         //this will never happen in a real environment, room-service will only send to kafka broker room creation response, this should come from another service
-        producer.send(KafkaTopics.CREATE_ROOM_TOPIC, userMessage);
-        consumer.getLatch().await(10000, TimeUnit.MILLISECONDS);
-        assertThat(consumer.getLatch().getCount() == 0L);
+        producer.send(KafkaTopics.ROOM_SERVICE_CREATE_TOPIC, userMessage);
+        Thread.sleep(10000);
+
+        final RoomServiceProto.ListRoomRequest listRoomRequest = RoomServiceProto.ListRoomRequest.newBuilder()
+                .addAllHashtags(List.of("#test1", "#test2"))
+                .addAllLanguages(List.of("it-IT"))
+                .setLongitude(0L)
+                .setLatitude(0L)
+                .setSearchRangeInMeters(5000)
+                .setUserId("aaa")
+                .build();
+
+        producer.send(KafkaTopics.ROOM_SERVICE_LIST_TOPIC, listRoomRequest);
+
+        Thread.sleep(10000);
     }
 
 }

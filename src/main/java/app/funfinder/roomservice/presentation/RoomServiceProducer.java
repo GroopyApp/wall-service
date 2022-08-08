@@ -19,4 +19,9 @@ public class RoomServiceProducer {
         logger.info("Producing message [{}]", message);
         kafkaTemplate.send(topic, message.toByteArray());
     }
+
+    public void send(final String topic, final RoomServiceProto.ListRoomRequest message) {
+        logger.info("Producing message [{}]", message);
+        kafkaTemplate.send(topic, message.toByteArray());
+    }
 }

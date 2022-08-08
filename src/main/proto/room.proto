@@ -9,19 +9,34 @@ message CreateRoomRequest {
   repeated string languages = 3;
   int64 latitude = 4;
   int64 longitude = 5;
-  string user_id = 6;
+  int32 range_in_meters = 6;
+  string user_id = 7;
 }
 
-message DeleteRoomRequest {
-  string room_id = 1;
-}
-
-message JoinRoomRequest {
-  string user_id = 1;
+message CreateRoomResponse {
+  string status = 1;
   string room_id = 2;
+  string room_name = 3;
 }
 
-message LeaveRoomRequest {
+message ListRoomRequest {
   string user_id = 1;
-  string room_id = 2;
+  int64 latitude = 2;
+  int64 longitude = 3;
+  repeated string hashtags = 4;
+  repeated string languages = 5;
+  int32 search_range_in_meters = 6;
+}
+
+message ListRoomResponse {
+  string status = 1;
+  repeated Room rooms = 2;
+}
+
+message Room {
+  string id = 1;
+  string name = 2;
+  int64 latitude = 3;
+  int64 longitude = 4;
+  int32 distance = 5;
 }

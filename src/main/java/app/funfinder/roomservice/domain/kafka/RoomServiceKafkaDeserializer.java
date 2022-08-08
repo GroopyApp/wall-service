@@ -1,8 +1,8 @@
-package app.funfinder.roomservice.utils.kafka;
+package app.funfinder.roomservice.domain.kafka;
 
 import lombok.SneakyThrows;
 import org.apache.kafka.common.serialization.Deserializer;
-import app.funfinder.protobuf.RoomServiceProto;;
+import app.funfinder.protobuf.RoomServiceProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +15,10 @@ public class RoomServiceKafkaDeserializer implements Deserializer<Object> {
     public Object deserialize(String topic, byte[] data) {
         logger.info("trying to convert byte data into proto message given topic: {}", topic);
         switch (topic) {
-            case KafkaTopics.CREATE_ROOM_TOPIC:
+            case KafkaTopics.ROOM_SERVICE_CREATE_TOPIC:
                 return RoomServiceProto.CreateRoomRequest.parseFrom(data);
+            case KafkaTopics.ROOM_SERVICE_LIST_TOPIC:
+                return RoomServiceProto.ListRoomRequest.parseFrom(data);
         }
         return null;
     }

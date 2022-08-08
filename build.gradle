@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
 	id "com.google.protobuf" version "0.8.19"
+	id 'org.openjfx.javafxplugin' version '0.0.12'
 }
 
 group = 'app.funfinder'
@@ -17,11 +18,21 @@ configurations {
 
 project.ext {
 	googleProtobufVersion = '3.14.0'
+	arcgisVersion = '100.14.0'
 }
 
 repositories {
+	mavenLocal()
 	mavenCentral()
+	maven {
+		url 'https://esri.jfrog.io/artifactory/arcgis'
+	}
 }
+
+configurations {
+	natives
+}
+
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -30,10 +41,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-graphql'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
-	implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.data:spring-data-elasticsearch'
 	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.apache.kafka:kafka-streams'
 	implementation "com.google.protobuf:protobuf-java:${googleProtobufVersion}"
 	implementation group: 'com.googlecode.protobuf-java-format', name: 'protobuf-java-format', version: '1.2'
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+	implementation group: 'no.entur.mapstruct.spi', name: 'protobuf-spi-impl', version: '1.28'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly group: 'com.google.protobuf', name: 'protobuf-java-util', version: '3.21.3'
 //	runtimeOnly 'io.micrometer:micrometer-registry-new-relic'
@@ -42,6 +56,9 @@ dependencies {
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.graphql:spring-graphql-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	annotationProcessor"no.entur.mapstruct.spi:protobuf-spi-impl:1.28"
 }
 
 tasks.named('test') {
@@ -56,5 +73,14 @@ protobuf {
 			artifact = 'com.google.protobuf:protoc:3.14.0'
 		}
 	}
+}
+
+task copyNatives(type: Copy) {
+	description = "Copies the arcgis native libraries into the .arcgis directory for development."
+	group = "build"
+	configurations.natives.asFileTree.each {
+		from(zipTree(it))
+	}
+	into "${System.properties.getProperty("user.home")}/.arcgis/$arcgisVersion"
 }
 

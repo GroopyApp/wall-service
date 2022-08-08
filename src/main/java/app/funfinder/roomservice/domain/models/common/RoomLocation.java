@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Location {
+public class RoomLocation {
     private Long latitude;
     private Long longitude;
+    private Integer rangeInMeters;
 }

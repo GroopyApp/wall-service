@@ -1,6 +1,5 @@
 package app.funfinder.roomservice.domain.models;
 
-import app.funfinder.roomservice.domain.models.common.RoomLocation;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,11 +7,11 @@ import java.util.List;
 
 @Data
 @Builder
-public class CreateRoomInternalRequest {
-
-    private String roomName;
+public class ListRoomInternalRequest {
+    private Long actualLatitude;
+    private Long actualLongitude;
+    private Integer searchRangeInMeters;
     private List<String> hashtags;
     private List<String> languages;
-    private RoomLocation roomLocation;
-    private String creator;
+    private String userId;
 }
