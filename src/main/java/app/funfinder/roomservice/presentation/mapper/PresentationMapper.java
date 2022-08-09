@@ -18,7 +18,6 @@ public interface PresentationMapper {
     @Mappings({
             @Mapping(target = "roomLocation.latitude", source = "latitude"),
             @Mapping(target = "roomLocation.longitude", source = "longitude"),
-            @Mapping(target = "roomLocation.rangeInMeters", source = "rangeInMeters"),
             @Mapping(target = "creator", source = "userId")})
     CreateRoomInternalRequest map(RoomServiceProto.CreateRoomRequest input);
 

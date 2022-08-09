@@ -12,7 +12,7 @@ import org.mapstruct.Mappings;
 public interface ApplicationMapper {
 
     @Mappings({
-            @Mapping(target = "latitude", source = "location.lat"),
-            @Mapping(target = "longitude", source = "location.lon")})
+            @Mapping(target = "latitude", ignore = true),
+            @Mapping(target = "longitude", ignore = true)})
     RoomDetails map(ESRoomInformation input);
 }

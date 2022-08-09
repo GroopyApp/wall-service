@@ -9,7 +9,6 @@ message CreateRoomRequest {
   repeated string languages = 3;
   float latitude = 4;
   float longitude = 5;
-  int32 range_in_meters = 6;
   string user_id = 7;
 }
 

@@ -2,8 +2,10 @@ package app.funfinder.roomservice.infrastructure.elasticsearch.repository.models
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.elasticsearch.annotations.*;
-import org.springframework.data.elasticsearch.core.geo.GeoPoint;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.GeoPointField;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
@@ -28,5 +30,5 @@ public class ESRoomInformation {
     private List<String> languages;
 
     @GeoPointField
-    private GeoPoint location;
+    private String location;
 }
