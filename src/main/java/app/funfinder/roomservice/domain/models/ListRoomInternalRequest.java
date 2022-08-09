@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 @Builder
 public class ListRoomInternalRequest {
-    private Long actualLatitude;
-    private Long actualLongitude;
+    private Float actualLatitude;
+    private Float actualLongitude;
     private Integer searchRangeInMeters;
     private List<String> hashtags;
     private List<String> languages;

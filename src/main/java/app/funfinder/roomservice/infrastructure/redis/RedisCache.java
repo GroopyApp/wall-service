@@ -1,4 +1,4 @@
-package app.funfinder.roomservice.domain.redis;
+package app.funfinder.roomservice.infrastructure.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

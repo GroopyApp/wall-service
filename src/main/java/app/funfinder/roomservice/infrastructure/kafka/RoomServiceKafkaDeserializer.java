@@ -1,4 +1,4 @@
-package app.funfinder.roomservice.domain.kafka;
+package app.funfinder.roomservice.infrastructure.kafka;
 
 import lombok.SneakyThrows;
 import org.apache.kafka.common.serialization.Deserializer;

@@ -9,8 +9,8 @@ import java.util.List;
 @Builder
 public class ESRoomSearchRequest {
 
-    private Long latitude;
-    private Long longitude;
+    private Float latitude;
+    private Float longitude;
     private Integer distanceAvailability;
     private List<String> hashtags;
     private List<String> languages;

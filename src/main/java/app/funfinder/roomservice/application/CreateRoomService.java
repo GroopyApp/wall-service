@@ -15,7 +15,8 @@ import org.springframework.data.geo.Point;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.stereotype.Service;
 
-//FIXME this should be managed by a domain bean!!!
+import java.util.UUID;
+
 @Service
 public class CreateRoomService {
 
@@ -31,7 +32,9 @@ public class CreateRoomService {
         try {
             validator.validate(request);
 
-            NewTopic topic = TopicBuilder.name(request.getRoomName()) //TODO this should be a unique id using UUID etc.
+            final String roomId = UUID.nameUUIDFromBytes(assembleId(request)).toString();
+
+            NewTopic topic = TopicBuilder.name(roomId)
                     .partitions(6)
                     .replicas(3)
                     .compact()
@@ -39,7 +42,7 @@ public class CreateRoomService {
 
             elasticSearchRoomRepository.save(
                     ESRoomInformation.builder()
-                            .roomId(topic.name())
+                            .roomId(roomId)
                             .roomName(request.getRoomName())
                             .hashtags(request.getHashtags())
                             .languages(request.getLanguages())
@@ -53,8 +56,8 @@ public class CreateRoomService {
             return CreateRoomInternalResponse.builder()
                     .responseStatus(Status.CREATED)
                     .room(RoomDetails.builder()
-                            .roomId(topic.name()) //TODO this should be a unique id using UUID etc.
-                            .roomName(topic.name())
+                            .roomId(topic.name())
+                            .roomName(request.getRoomName())
                             .build())
                     .build();
         } catch (Exception e) {
@@ -63,5 +66,17 @@ public class CreateRoomService {
                     .responseStatus(Status.UNKNOWN_ERROR)
                     .build();
         }
+    }
+
+    private byte[] assembleId(CreateRoomInternalRequest request) {
+        StringBuilder sb = new StringBuilder(request.getRoomName());
+        request.getHashtags().forEach(sb::append);
+        request.getLanguages().forEach(sb::append);
+        sb.append(
+                request.getRoomLocation().getLatitude())
+                .append(
+                 request.getRoomLocation().getLongitude()
+                );
+        return sb.toString().getBytes();
     }
 }

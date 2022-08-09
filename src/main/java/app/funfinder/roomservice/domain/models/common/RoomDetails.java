@@ -8,7 +8,7 @@ import lombok.Data;
 public class RoomDetails {
     private String roomId;
     private String roomName;
-    private Long latitude;
-    private Long longitude;
+    private Float latitude;
+    private Float longitude;
     private Integer distance;
 }

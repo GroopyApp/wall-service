@@ -10,9 +10,11 @@ import org.springframework.data.geo.Point;
 
 import java.util.List;
 
+import static app.funfinder.roomservice.domain.elasticsearch.ESIndexes.ROOM_INDEX;
+
 @Data
 @Builder
-@Document(indexName = "room_info")
+@Document(indexName = ROOM_INDEX)
 public class ESRoomInformation {
 
     @Id

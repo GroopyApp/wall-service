@@ -7,12 +7,13 @@ import app.funfinder.protobuf.RoomServiceProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import static app.funfinder.roomservice.domain.kafka.KafkaTopics.*;
-
-@Component
+@RestController("/")
 public class RoomServiceController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(RoomServiceController.class);
@@ -24,21 +25,27 @@ public class RoomServiceController {
     @Autowired
     private PresentationMapper presentationMapper;
 
-    @KafkaListener(topics = ROOM_SERVICE_CREATE_TOPIC, groupId = GROUP_CREATE_ROOM)
-    public void createRoom(RoomServiceProto.CreateRoomRequest payload) {
+    @PostMapping(value = "/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.CreateRoomResponse response = presentationMapper.map(
                 createRoomService.createRoom(presentationMapper.map(payload))
         );
         LOGGER.info("Sending CreateRoomResponse {}", response);
+        return ResponseEntity.ok(response);
     }
 
-    @KafkaListener(topics = ROOM_SERVICE_LIST_TOPIC, groupId = GROUP_LIST_ROOMS)
-    public void listRoom(RoomServiceProto.ListRoomRequest payload) {
+    @PostMapping(value = "/list",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RoomServiceProto.ListRoomResponse> listRoom(RoomServiceProto.ListRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
                 listRoomService.listRoom(presentationMapper.map(payload))
         );
         LOGGER.info("Sending ListRoomResponse {}", response);
+        return ResponseEntity.ok(response);
     }
 }
