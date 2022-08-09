@@ -38,12 +38,14 @@ public class ListRoomService {
             List<ESRoomInformation> result = esRoomRepository.findBy(ESRoomSearchRequest.builder()
                             .latitude(request.getActualLatitude())
                             .longitude(request.getActualLongitude())
-                            .distanceAvailability(request.getSearchRangeInMeters())
                             .hashtags(request.getHashtags())
                             .languages(request.getLanguages())
+                            .distanceAvailability(request.getSearchRangeInMeters())
                     .build());
             return ListRoomInternalResponse.builder()
-                    .rooms(result.stream().map(this::convertFromES).collect(Collectors.toList()))
+                    .rooms(result.stream()
+                            .map(esInfo -> mapper.map(esInfo))
+                            .collect(Collectors.toList()))
                     .build();
         } catch (Exception e) {
             logger.info("an error occurred trying to create room: {}", request, e);
@@ -51,11 +53,5 @@ public class ListRoomService {
                     .responseStatus(Status.UNKNOWN_ERROR)
                     .build();
         }
-    }
-
-    private RoomDetails convertFromES(ESRoomInformation esRoomInformation) {
-        RoomDetails result = mapper.map(esRoomInformation);
-        result.setDistance(0); //TODO implement this
-        return result;
     }
 }

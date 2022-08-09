@@ -27,7 +27,7 @@ public class ESRoomRepository {
         BoolQueryBuilder query = new BoolQueryBuilder();
 
         if (searchRequest.getLatitude() != 0 && searchRequest.getLongitude() != 0 && searchRequest.getDistanceAvailability() != 0) {
-            GeoDistanceQueryBuilder geoDistanceFilter = QueryBuilders.geoDistanceQuery("point")
+            GeoDistanceQueryBuilder geoDistanceFilter = QueryBuilders.geoDistanceQuery("location")
                     .point(searchRequest.getLatitude(), searchRequest.getLongitude()).distance(searchRequest.getDistanceAvailability(), DistanceUnit.METERS);
             query.should(geoDistanceFilter);
         }

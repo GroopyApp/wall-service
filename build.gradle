@@ -24,9 +24,6 @@ project.ext {
 repositories {
 	mavenLocal()
 	mavenCentral()
-	maven {
-		url 'https://esri.jfrog.io/artifactory/arcgis'
-	}
 }
 
 configurations {
@@ -41,7 +38,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.data:spring-data-elasticsearch'
+	implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.apache.kafka:kafka-streams'
 	implementation "com.google.protobuf:protobuf-java:${googleProtobufVersion}"

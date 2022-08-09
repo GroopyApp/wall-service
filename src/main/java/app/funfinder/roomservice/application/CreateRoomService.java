@@ -11,7 +11,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Point;
+import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +46,7 @@ public class CreateRoomService {
                             .roomName(request.getRoomName())
                             .hashtags(request.getHashtags())
                             .languages(request.getLanguages())
-                            .point(new Point(
+                            .location(new GeoPoint(
                                     request.getRoomLocation().getLatitude(),
                                     request.getRoomLocation().getLongitude()))
                             .build());

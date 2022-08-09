@@ -12,8 +12,7 @@ import org.mapstruct.Mappings;
 public interface ApplicationMapper {
 
     @Mappings({
-            @Mapping(ignore = true, target = "distance"),
-            @Mapping(target = "latitude", source = "point.x"),
-            @Mapping(target = "longitude", source = "point.y")})
+            @Mapping(target = "latitude", source = "location.lat"),
+            @Mapping(target = "longitude", source = "location.lon")})
     RoomDetails map(ESRoomInformation input);
 }

@@ -10,5 +10,4 @@ public class RoomDetails {
     private String roomName;
     private Float latitude;
     private Float longitude;
-    private Integer distance;
 }
