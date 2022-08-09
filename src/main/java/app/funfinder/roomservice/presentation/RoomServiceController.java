@@ -40,7 +40,7 @@ public class RoomServiceController {
     @PostMapping(value = "/list",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RoomServiceProto.ListRoomResponse> listRoom(RoomServiceProto.ListRoomRequest payload) {
+    public ResponseEntity<RoomServiceProto.ListRoomResponse> listRoom(@RequestBody RoomServiceProto.ListRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
                 listRoomService.listRoom(presentationMapper.map(payload))
