@@ -1,4 +1,4 @@
-package app.funfinder.roomservice.infrastructure.elasticsearch.repository.models;
+package app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.entities;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +15,7 @@ import static app.funfinder.roomservice.domain.elasticsearch.ESIndexes.ROOM_INDE
 @Data
 @Builder
 @Document(indexName = ROOM_INDEX)
-public class ESRoomInformation {
+public class ESRoomEntity {
 
     @Id
     private String roomId;
@@ -23,10 +23,8 @@ public class ESRoomInformation {
     @Field(type = FieldType.Text, name = "roomName")
     private String roomName;
 
-    @Field(type = FieldType.Auto, name = "hashtags")
     private List<String> hashtags;
 
-    @Field(type = FieldType.Auto, name = "languages")
     private List<String> languages;
 
     @GeoPointField

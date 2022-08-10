@@ -1,4 +1,4 @@
-package app.funfinder.roomservice.infrastructure.elasticsearch.repository.models;
+package app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.dtos;
 
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +9,7 @@ import java.util.List;
 @Builder
 public class ESRoomSearchRequest {
 
-    private Float latitude;
-    private Float longitude;
-    private Integer distanceAvailability;
+    private ESPoint point;
     private List<String> hashtags;
     private List<String> languages;
 }

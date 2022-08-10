@@ -6,14 +6,13 @@ import app.funfinder.roomservice.domain.models.ListRoomInternalResponse;
 import app.funfinder.roomservice.domain.models.common.RoomDetails;
 import app.funfinder.roomservice.domain.models.common.Status;
 import app.funfinder.roomservice.domain.validators.ListRoomValidator;
-import app.funfinder.roomservice.infrastructure.elasticsearch.repository.RoomRepository;
-import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.ESRoomInformation;
-import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.ESRoomSearchRequest;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.dtos.ESPoint;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.dtos.ESRoomSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class ListRoomService {
     private ListRoomValidator validator;
 
     @Autowired
-    private RoomRepository esRoomRepository;
+    private ElasticsearchRoomRepository esRoomRepository;
 
     @Autowired
     private ApplicationMapper mapper;
@@ -40,10 +39,14 @@ public class ListRoomService {
         try {
             validator.validate(request);
 
-            List<ESRoomInformation> result = esRoomRepository.findBySearchRequest(ESRoomSearchRequest.builder()
-                            .latitude(request.getActualLatitude())
-                            .longitude(request.getActualLongitude())
-                            .distanceAvailability(request.getSearchRangeInMeters())
+            List<ESRoomEntity> result = esRoomRepository.findBySearchRequest(ESRoomSearchRequest.builder()
+                            .point(ESPoint.builder()
+                                    .latitude(request.getActualLatitude())
+                                    .longitude(request.getActualLongitude())
+                                    .distanceAvailability(request.getSearchRangeInMeters())
+                                    .build())
+                            .hashtags(request.getHashtags())
+                            .languages(request.getLanguages())
                     .build());
             return ListRoomInternalResponse.builder()
                     .rooms(result.stream().map(r -> {

@@ -5,8 +5,8 @@ import app.funfinder.roomservice.domain.models.CreateRoomInternalResponse;
 import app.funfinder.roomservice.domain.models.common.RoomDetails;
 import app.funfinder.roomservice.domain.models.common.Status;
 import app.funfinder.roomservice.domain.validators.CreateRoomValidator;
-import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.ESRoomInformation;
-import app.funfinder.roomservice.infrastructure.elasticsearch.repository.ESRoomRepository;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
+import app.funfinder.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
 import app.funfinder.roomservice.utils.CoordsUtils;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class CreateRoomService {
     private CreateRoomValidator validator;
 
     @Autowired
-    private ESRoomRepository elasticSearchRoomRepository;
+    private ElasticsearchRoomRepository elasticSearchRoomRepository;
 
     public CreateRoomInternalResponse createRoom(CreateRoomInternalRequest request) {
         try {
@@ -41,7 +41,7 @@ public class CreateRoomService {
                     .build();
 
             elasticSearchRoomRepository.save(
-                    ESRoomInformation.builder()
+                    ESRoomEntity.builder()
                             .roomId(roomId)
                             .roomName(request.getRoomName())
                             .hashtags(request.getHashtags())

@@ -37,5 +37,6 @@ message Room {
   string name = 2;
   float latitude = 3;
   float longitude = 4;
-  int32 distance = 5;
+  repeated string hashtags = 6;
+  repeated string languages = 7;
 }
