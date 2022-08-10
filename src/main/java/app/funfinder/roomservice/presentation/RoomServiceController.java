@@ -19,9 +19,9 @@ public class RoomServiceController {
     private final Logger LOGGER = LoggerFactory.getLogger(RoomServiceController.class);
     @Autowired
     private CreateRoomService createRoomService;
-
     @Autowired
     private ListRoomService listRoomService;
+
     @Autowired
     private PresentationMapper presentationMapper;
 
