@@ -56,12 +56,10 @@ public class ElasticsearchRoomRepository {
                 break;
         }
 
-        if (request.getPoint() != null && isValidDistance(request.getPoint())) {
-            QueryBuilder geoQuery = QueryBuilders.geoDistanceQuery("location")
-                    .distance(distance, DistanceUnit.METERS)
-                    .point(new GeoPoint(request.getPoint().getLatitude(), request.getPoint().getLongitude()));
-            queryBuilder.must(geoQuery);
-        }
+        QueryBuilder geoQuery = QueryBuilders.geoDistanceQuery("location")
+                .distance(distance, DistanceUnit.METERS)
+                .point(new GeoPoint(request.getPoint().getLatitude(), request.getPoint().getLongitude()));
+        queryBuilder.must(geoQuery);
 
         request.getLanguages().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("languages", v)).minimumShouldMatch(1));
 
@@ -72,12 +70,5 @@ public class ElasticsearchRoomRepository {
         List<ESRoomEntity> entities = elasticsearchOperations.search(query, ESRoomEntity.class).stream().map(SearchHit::getContent).collect(Collectors.toList());
 
         return entities.stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
-    }
-
-    private boolean isValidDistance(ESPoint point) {
-        return point.getLatitude() != null
-                && point.getLongitude() != null
-                && point.getDistanceAvailability() != null
-                && point.getDistanceAvailability() > 0;
     }
 }
