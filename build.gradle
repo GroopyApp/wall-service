@@ -6,7 +6,7 @@ plugins {
 	id 'org.openjfx.javafxplugin' version '0.0.12'
 }
 
-group = 'app.funfinder'
+group = 'app.groopy'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 

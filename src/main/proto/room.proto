@@ -1,6 +1,6 @@
 syntax = "proto3";
 package roomservice;
-option java_package = "app.funfinder.protobuf";
+option java_package = "app.groopy.protobuf";
 option java_outer_classname = "RoomServiceProto";
 
 message CreateRoomRequest {
