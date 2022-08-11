@@ -30,7 +30,7 @@ public class RoomServiceController {
     @PostMapping(value = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) throws CreateRoomValuesValidationException {
+    public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.CreateRoomResponse response = presentationMapper.map(
                 createRoomService.createRoom(presentationMapper.map(payload))
