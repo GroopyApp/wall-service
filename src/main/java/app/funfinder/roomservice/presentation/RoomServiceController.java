@@ -2,6 +2,7 @@ package app.funfinder.roomservice.presentation;
 
 import app.funfinder.roomservice.application.CreateRoomService;
 import app.funfinder.roomservice.application.ListRoomService;
+import app.funfinder.roomservice.domain.exceptions.CreateRoomValuesValidationException;
 import app.funfinder.roomservice.presentation.mapper.PresentationMapper;
 import app.funfinder.protobuf.RoomServiceProto;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class RoomServiceController {
     @PostMapping(value = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) {
+    public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) throws CreateRoomValuesValidationException {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.CreateRoomResponse response = presentationMapper.map(
                 createRoomService.createRoom(presentationMapper.map(payload))
