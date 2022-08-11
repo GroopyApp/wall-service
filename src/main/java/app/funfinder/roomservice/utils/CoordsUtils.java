@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class CoordsUtils {
 
+    public static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 20000;
     public static Float[] getGeoPointFormString(String point) {
         return Arrays.stream(point.split(",")).map(Float::valueOf).toArray(Float[]::new);
 

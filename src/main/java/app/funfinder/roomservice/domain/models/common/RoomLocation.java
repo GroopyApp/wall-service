@@ -8,5 +8,4 @@ import lombok.Data;
 public class RoomLocation {
     private Float latitude;
     private Float longitude;
-    private Integer rangeInMeters;
 }

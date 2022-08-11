@@ -5,6 +5,7 @@ import app.funfinder.roomservice.application.ListRoomService;
 import app.funfinder.roomservice.domain.exceptions.CreateRoomValuesValidationException;
 import app.funfinder.roomservice.presentation.mapper.PresentationMapper;
 import app.funfinder.protobuf.RoomServiceProto;
+import app.funfinder.roomservice.domain.models.common.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class RoomServiceController {
     public ResponseEntity<RoomServiceProto.ListRoomResponse> listRoom(@RequestBody RoomServiceProto.ListRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
-                listRoomService.listRoom(presentationMapper.map(payload))
+                listRoomService.listRoom(presentationMapper.map(payload), SearchScope.STANDARD_SEARCH)
         );
         LOGGER.info("Sending ListRoomResponse {}", response);
         return ResponseEntity.ok(response);

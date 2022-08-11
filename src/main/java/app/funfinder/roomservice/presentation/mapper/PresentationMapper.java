@@ -6,12 +6,11 @@ import app.funfinder.roomservice.domain.models.CreateRoomInternalResponse;
 import app.funfinder.roomservice.domain.models.ListRoomInternalRequest;
 import app.funfinder.roomservice.domain.models.ListRoomInternalResponse;
 import app.funfinder.roomservice.domain.models.common.RoomDetails;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+@Mapper(componentModel = "spring",
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface PresentationMapper {
 
 
