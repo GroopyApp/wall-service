@@ -36,6 +36,11 @@ public class RoomServiceController {
         RoomServiceProto.CreateRoomResponse response = presentationMapper.map(
                 createRoomService.createRoom(presentationMapper.map(payload))
         );
+
+        if (response.getStatus().equals(GeneralStatus.OK.name())) {
+            subscribeService.subscribe(payload.getUserId(), response.getRoomId());
+        }
+
         LOGGER.info("Sending CreateRoomResponse {}", response);
         return ResponseEntity.ok(response);
     }
@@ -59,7 +64,7 @@ public class RoomServiceController {
         LOGGER.info("Processing message {}", payload);
         subscribeService.subscribe(payload.getUserId(), payload.getRoomId());
         return ResponseEntity.ok(RoomServiceProto.SubscribeRoomResponse.newBuilder()
-                .setStatus(GeneralStatus.CREATED.getCode())
+                .setStatus(GeneralStatus.OK.getCode())
                 .build());
     }
 
