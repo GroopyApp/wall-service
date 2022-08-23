@@ -10,4 +10,8 @@ public class ListRoomValidator {
     public void validate(ListRoomInternalRequest request) {
         //TODO add logic to decide if room must be created or not
     }
+
+    public void validate(String userId) {
+        //TODO add logic to decide if a user is valid or not
+    }
 }

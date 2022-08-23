@@ -1,6 +1,6 @@
 package app.groopy.roomservice.domain.models.common;
 
-public enum Status {
+public enum GeneralStatus {
 
     CREATED(200),
     UNKNOWN_ERROR(500),
@@ -8,7 +8,7 @@ public enum Status {
 
     private final Integer code;
 
-    Status(Integer code) {
+    GeneralStatus(Integer code) {
         this.code = code;
     }
 

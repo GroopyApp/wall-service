@@ -1,7 +1,7 @@
 package app.groopy.roomservice.domain.models;
 
 import app.groopy.roomservice.domain.models.common.RoomDetails;
-import app.groopy.roomservice.domain.models.common.Status;
+import app.groopy.roomservice.domain.models.common.GeneralStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 public class ListRoomInternalResponse {
 
-    private Status responseStatus;
+    private GeneralStatus responseStatus;
     private List<RoomDetails> rooms;
 }

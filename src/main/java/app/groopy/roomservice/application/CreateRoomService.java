@@ -3,7 +3,8 @@ package app.groopy.roomservice.application;
 import app.groopy.roomservice.domain.models.CreateRoomInternalRequest;
 import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
-import app.groopy.roomservice.domain.models.common.Status;
+import app.groopy.roomservice.domain.models.common.GeneralStatus;
+import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.domain.validators.CreateRoomValidator;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
@@ -47,6 +48,8 @@ public class CreateRoomService {
                         .roomName(request.getRoomName())
                         .hashtags(request.getHashtags())
                         .languages(request.getLanguages())
+//                        .status(RoomStatus.PENDING) TODO implement this and remove line below
+                        .status(RoomStatus.CREATED)
                         .location(new GeoPoint(
                                 request.getRoomLocation().getLatitude(),
                                 request.getRoomLocation().getLongitude()))
@@ -55,7 +58,7 @@ public class CreateRoomService {
         logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 
         return CreateRoomInternalResponse.builder()
-                .responseStatus(Status.CREATED)
+                .responseStatus(GeneralStatus.CREATED)
                 .room(RoomDetails.builder()
                         .roomId(topic.name())
                         .roomName(request.getRoomName())
