@@ -55,7 +55,7 @@ public class RoomServiceController {
     @PutMapping(value = "/subscribe",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity subscribe(@RequestBody RoomServiceProto.SubscribeRoomRequest payload) {
+    public ResponseEntity<RoomServiceProto.SubscribeRoomResponse> subscribe(@RequestBody RoomServiceProto.SubscribeRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         subscribeService.subscribe(payload.getUserId(), payload.getRoomId());
         return ResponseEntity.ok(RoomServiceProto.SubscribeRoomResponse.newBuilder()
