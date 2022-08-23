@@ -33,6 +33,15 @@ message ListRoomResponse {
   repeated Room rooms = 2;
 }
 
+message SubscribeRoomRequest {
+  string userId = 1;
+  string roomId = 2;
+}
+
+message SubscribeRoomResponse {
+  int32 status = 1;
+}
+
 message CreateRoomError {
   string description = 1;
 }
@@ -42,6 +51,7 @@ message Room {
   string name = 2;
   float latitude = 3;
   float longitude = 4;
+  string status = 5;
   repeated string hashtags = 6;
   repeated string languages = 7;
 }

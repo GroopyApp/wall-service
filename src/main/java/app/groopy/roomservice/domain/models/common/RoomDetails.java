@@ -12,6 +12,7 @@ public class RoomDetails {
     private String roomName;
     private Float latitude;
     private Float longitude;
+    private RoomStatus status;
     private List<String> hashtags;
     private List<String> languages;
 }

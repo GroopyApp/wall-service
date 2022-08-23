@@ -1,5 +1,6 @@
 package app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities;
 
+import app.groopy.roomservice.domain.models.common.RoomStatus;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -27,6 +28,9 @@ public class ESRoomEntity {
     private List<String> hashtags;
 
     private List<String> languages;
+
+    @Field(type = FieldType.Text, name = "status")
+    private RoomStatus status;
 
     @GeoPointField
     private GeoPoint location;

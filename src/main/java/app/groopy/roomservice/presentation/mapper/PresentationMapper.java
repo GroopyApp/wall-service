@@ -23,7 +23,8 @@ public interface PresentationMapper {
     @Mappings({
             @Mapping(target = "status", source = "responseStatus"),
             @Mapping(target = "roomId", source = "room.roomId"),
-            @Mapping(target = "roomName", source = "room.roomName")})
+            @Mapping(target = "roomName", source = "room.roomName"),
+            @Mapping(target = "error", ignore = true)})
     RoomServiceProto.CreateRoomResponse map(CreateRoomInternalResponse input);
 
     @Mappings({
