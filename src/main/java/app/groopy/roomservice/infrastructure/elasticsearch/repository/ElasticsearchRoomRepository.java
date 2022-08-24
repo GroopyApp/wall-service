@@ -25,11 +25,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static app.groopy.roomservice.domain.models.common.RoomStatus.*;
-import static app.groopy.roomservice.utils.CoordsUtils.DEFAULT_SEARCH_RANGE_IN_METERS;
 
 @Repository
 public class ElasticsearchRoomRepository {
 
+    private static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 20000;
     @Autowired
     private ESRoomRepository esRoomRepository;  //FIXME this is used just for save for indexing, find a way to remove it
 

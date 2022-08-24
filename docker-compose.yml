@@ -24,14 +24,14 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
       KAFKA_MIN_INSYNC_REPLICAS: '1'
 
-  cache:
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes:
-      - cache:/data
+#  cache:
+#    image: redis:6.2-alpine
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+#    volumes:
+#      - cache:/data
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.5
@@ -55,7 +55,7 @@ services:
     ports:
       - 9200:9200
 volumes:
-  cache:
-    driver: local
+#  cache:
+#    driver: local
   elasticsearch-data:
     driver: local

@@ -55,7 +55,7 @@ public class CreateRoomService {
                                 request.getRoomLocation().getLongitude()))
                         .build());
 
-
+       elasticSearchRoomRepository.subscribeUserToRoom(request.getCreator(), roomId);
 
         logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 

@@ -26,12 +26,12 @@ public class ListRoomService {
     private ListRoomValidator validator;
 
     @Autowired
-    private ElasticsearchRoomRepository esRoomRepository;
+    private ElasticsearchRoomRepository elasticSearchRoomRepository;
 
     public ListRoomInternalResponse searchRoom(ListRoomInternalRequest request, SearchScope searchScope) {
         validator.validate(request);
 
-        List<RoomDetails> result = esRoomRepository.findBySearchRequest(ESRoomSearchRequest.builder()
+        List<RoomDetails> result = elasticSearchRoomRepository.findBySearchRequest(ESRoomSearchRequest.builder()
                 .point(ESPoint.builder()
                         .latitude(request.getActualLatitude())
                         .longitude(request.getActualLongitude())
@@ -50,7 +50,7 @@ public class ListRoomService {
     public ListRoomInternalResponse listRoom(String userId) {
         validator.validate(userId);
 
-        List<RoomDetails> result = esRoomRepository.findByUserId(userId);
+        List<RoomDetails> result = elasticSearchRoomRepository.findByUserId(userId);
         return ListRoomInternalResponse.builder()
                 .responseStatus(GeneralStatus.COMPLETED)
                 .rooms(result)

@@ -33,8 +33,8 @@ configurations {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -70,14 +70,5 @@ protobuf {
 			artifact = 'com.google.protobuf:protoc:3.14.0'
 		}
 	}
-}
-
-task copyNatives(type: Copy) {
-	description = "Copies the arcgis native libraries into the .arcgis directory for development."
-	group = "build"
-	configurations.natives.asFileTree.each {
-		from(zipTree(it))
-	}
-	into "${System.properties.getProperty("user.home")}/.arcgis/$arcgisVersion"
 }
 

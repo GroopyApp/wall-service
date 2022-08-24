@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 public class SubscribeService {
 
     @Autowired
-    private ElasticsearchRoomRepository esRoomRepository;
+    private ElasticsearchRoomRepository elasticSearchRoomRepository;
 
     @SneakyThrows
     public void subscribe(String userId, String roomId) {
-        esRoomRepository.subscribeUserToRoom(userId, roomId);
+        elasticSearchRoomRepository.subscribeUserToRoom(userId, roomId);
     }
 
 
