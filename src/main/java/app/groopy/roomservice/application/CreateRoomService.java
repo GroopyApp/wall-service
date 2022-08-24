@@ -60,7 +60,7 @@ public class CreateRoomService {
         logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 
         return CreateRoomInternalResponse.builder()
-                .responseStatus(GeneralStatus.CREATED)
+                .responseStatus(GeneralStatus.OK)
                 .room(RoomDetails.builder()
                         .roomId(topic.name())
                         .roomName(request.getRoomName())

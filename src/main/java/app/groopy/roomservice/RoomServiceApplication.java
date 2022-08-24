@@ -7,9 +7,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @SpringBootApplication
 @EnableElasticsearchRepositories
 public class RoomServiceApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(RoomServiceApplication.class, args);
 	}
-
 }

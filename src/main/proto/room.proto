@@ -16,7 +16,7 @@ message CreateRoomResponse {
   string status = 1;
   string room_id = 2;
   string room_name = 3;
-  CreateRoomError error = 4;
+  Error error = 4;
 }
 
 message ListRoomRequest {
@@ -31,6 +31,7 @@ message ListRoomRequest {
 message ListRoomResponse {
   string status = 1;
   repeated Room rooms = 2;
+  Error error = 3;
 }
 
 message SubscribeRoomRequest {
@@ -42,7 +43,7 @@ message SubscribeRoomResponse {
   int32 status = 1;
 }
 
-message CreateRoomError {
+message Error {
   string description = 1;
 }
 

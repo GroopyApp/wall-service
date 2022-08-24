@@ -2,7 +2,7 @@ package app.groopy.roomservice.domain.models.common;
 
 public enum GeneralStatus {
 
-    CREATED(200),
+    OK(200),
     UNKNOWN_ERROR(500),
     COMPLETED(201);
 

@@ -36,6 +36,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .add(RoomServiceProto.CreateRoomResponse.getDescriptor())
                 .add(RoomServiceProto.ListRoomRequest.getDescriptor())
                 .add(RoomServiceProto.ListRoomResponse.getDescriptor())
+                .add(RoomServiceProto.SubscribeRoomRequest.getDescriptor())
+                .add(RoomServiceProto.SubscribeRoomResponse.getDescriptor())
                 .build();
 
         JsonFormat.Printer printer = JsonFormat.printer().usingTypeRegistry(typeRegistry)
