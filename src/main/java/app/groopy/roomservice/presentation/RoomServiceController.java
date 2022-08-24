@@ -51,7 +51,18 @@ public class RoomServiceController {
     public ResponseEntity<RoomServiceProto.ListRoomResponse> searchRooms(@RequestBody RoomServiceProto.ListRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
-                listRoomService.listRoom(presentationMapper.map(payload), SearchScope.STANDARD_SEARCH)
+                listRoomService.searchRoom(presentationMapper.map(payload), SearchScope.STANDARD_SEARCH)
+        );
+        LOGGER.info("Sending ListRoomResponse {}", response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/list/{userId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RoomServiceProto.ListRoomResponse> listRooms(@PathVariable("userId") String userId) {
+        RoomServiceProto.ListRoomResponse response = presentationMapper.map(
+                listRoomService.listRoom(userId)
         );
         LOGGER.info("Sending ListRoomResponse {}", response);
         return ResponseEntity.ok(response);
@@ -66,16 +77,5 @@ public class RoomServiceController {
         return ResponseEntity.ok(RoomServiceProto.SubscribeRoomResponse.newBuilder()
                 .setStatus(GeneralStatus.OK.getCode())
                 .build());
-    }
-
-    @GetMapping(value = "/list/{userId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RoomServiceProto.ListRoomResponse> listRooms(@PathVariable("userId") String userId) {
-        RoomServiceProto.ListRoomResponse response = presentationMapper.map(
-                listRoomService.getSubscribedRooms(userId)
-        );
-        LOGGER.info("Sending ListRoomResponse {}", response);
-        return ResponseEntity.ok(response);
     }
 }

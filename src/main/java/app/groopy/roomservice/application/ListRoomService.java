@@ -28,7 +28,7 @@ public class ListRoomService {
     @Autowired
     private ElasticsearchRoomRepository esRoomRepository;
 
-    public ListRoomInternalResponse listRoom(ListRoomInternalRequest request, SearchScope searchScope) {
+    public ListRoomInternalResponse searchRoom(ListRoomInternalRequest request, SearchScope searchScope) {
         validator.validate(request);
 
         List<RoomDetails> result = esRoomRepository.findBySearchRequest(ESRoomSearchRequest.builder()
@@ -47,7 +47,7 @@ public class ListRoomService {
     }
 
     @SneakyThrows
-    public ListRoomInternalResponse getSubscribedRooms(String userId) {
+    public ListRoomInternalResponse listRoom(String userId) {
         validator.validate(userId);
 
         List<RoomDetails> result = esRoomRepository.findByUserId(userId);
