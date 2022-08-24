@@ -4,6 +4,7 @@ import app.groopy.roomservice.application.CreateRoomService;
 import app.groopy.roomservice.application.ListRoomService;
 import app.groopy.roomservice.application.SubscribeService;
 import app.groopy.roomservice.domain.models.common.GeneralStatus;
+import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.presentation.mapper.PresentationMapper;
 import app.groopy.protobuf.RoomServiceProto;
 import app.groopy.roomservice.domain.models.common.SearchScope;
@@ -55,7 +56,7 @@ public class RoomServiceController {
     @PutMapping(value = "/subscribe",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity subscribe(@RequestBody RoomServiceProto.SubscribeRoomRequest payload) {
+    public ResponseEntity<RoomServiceProto.SubscribeRoomResponse> subscribe(@RequestBody RoomServiceProto.SubscribeRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         subscribeService.subscribe(payload.getUserId(), payload.getRoomId());
         return ResponseEntity.ok(RoomServiceProto.SubscribeRoomResponse.newBuilder()
