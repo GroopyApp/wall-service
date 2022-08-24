@@ -6,9 +6,11 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface ESRoomRepository extends ElasticsearchRepository<ESRoomEntity, String> {
 
     List<ESRoomEntity> getESRoomEntitiesByRoomIdInAndStatusIn(List<String> roomdIds, List<RoomStatus> statuses);
+    Optional<ESRoomEntity> findESRoomEntityByRoomName(String roomName);
 }

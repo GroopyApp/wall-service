@@ -1,4 +1,4 @@
-package app.groopy.roomservice.domain.validators;
+package app.groopy.roomservice.application.validators;
 
 import app.groopy.roomservice.domain.models.ListRoomInternalRequest;
 import org.springframework.stereotype.Component;

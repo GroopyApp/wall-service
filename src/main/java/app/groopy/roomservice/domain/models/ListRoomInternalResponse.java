@@ -10,7 +10,5 @@ import java.util.List;
 @Data
 @Builder
 public class ListRoomInternalResponse {
-
-    private GeneralStatus responseStatus;
     private List<RoomDetails> rooms;
 }

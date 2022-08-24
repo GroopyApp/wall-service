@@ -29,7 +29,7 @@ import static app.groopy.roomservice.domain.models.common.RoomStatus.*;
 @Repository
 public class ElasticsearchRoomRepository {
 
-    private static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 20000;
+    private static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 10000;
     @Autowired
     private ESRoomRepository esRoomRepository;  //FIXME this is used just for save for indexing, find a way to remove it
 
@@ -47,7 +47,7 @@ public class ElasticsearchRoomRepository {
 
     public List<RoomDetails> findBySearchRequest(ESRoomSearchRequest request, SearchScope searchScope) {
 
-        Integer distance = null;
+        Integer distance = DEFAULT_SEARCH_RANGE_IN_METERS;
 
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
@@ -57,8 +57,7 @@ public class ElasticsearchRoomRepository {
                 request.getHashtags().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("hashtags", v)));
                 break;
             case LOOKING_FOR_SIMILAR:
-                distance = DEFAULT_SEARCH_RANGE_IN_METERS;
-                request.getHashtags().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("hashtags", v)).minimumShouldMatch(2));
+                request.getHashtags().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("hashtags", v)).minimumShouldMatch(3));
                 break;
         }
 
@@ -67,11 +66,11 @@ public class ElasticsearchRoomRepository {
 
         if (distance > 0) {
          geoBuilder.distance(distance, DistanceUnit.METERS);
+         queryBuilder.must(geoBuilder);
         }
 
-        queryBuilder.must(geoBuilder);
 
-        request.getLanguages().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("languages", v)).minimumShouldMatch(1));
+        request.getLanguages().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("languages", v)));
 
         NativeSearchQuery query = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
@@ -104,5 +103,10 @@ public class ElasticsearchRoomRepository {
         }
         user.getSubscribedRooms().add(roomId);
         esUserRepository.save(user);
+    }
+
+    public RoomDetails findByRoomName(String roomName) {
+        ESRoomEntity room = esRoomRepository.findESRoomEntityByRoomName(roomName).orElse(null);
+        return room != null ? mapper.map(room) : null;
     }
 }

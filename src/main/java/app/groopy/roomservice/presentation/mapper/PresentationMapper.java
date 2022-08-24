@@ -21,10 +21,8 @@ public interface PresentationMapper {
     CreateRoomInternalRequest map(RoomServiceProto.CreateRoomRequest input);
 
     @Mappings({
-            @Mapping(target = "status", source = "responseStatus"),
             @Mapping(target = "roomId", source = "room.roomId"),
-            @Mapping(target = "roomName", source = "room.roomName"),
-            @Mapping(target = "error", ignore = true)})
+            @Mapping(target = "roomName", source = "room.roomName")})
     RoomServiceProto.CreateRoomResponse map(CreateRoomInternalResponse input);
 
     @Mappings({
@@ -32,7 +30,6 @@ public interface PresentationMapper {
             @Mapping(target = "actualLongitude", source = "longitude")})
     ListRoomInternalRequest map(RoomServiceProto.ListRoomRequest input);
 
-    @Mappings({@Mapping(target = "status", source = "responseStatus")})
     RoomServiceProto.ListRoomResponse map(ListRoomInternalResponse input);
 
     @Mappings({

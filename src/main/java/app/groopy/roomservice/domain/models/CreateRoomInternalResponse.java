@@ -8,7 +8,5 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateRoomInternalResponse {
-
-    private GeneralStatus responseStatus;
     private RoomDetails room;
 }

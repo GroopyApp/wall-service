@@ -13,10 +13,8 @@ message CreateRoomRequest {
 }
 
 message CreateRoomResponse {
-  string status = 1;
-  string room_id = 2;
-  string room_name = 3;
-  Error error = 4;
+  string room_id = 1;
+  string room_name = 2;
 }
 
 message ListRoomRequest {
@@ -29,9 +27,7 @@ message ListRoomRequest {
 }
 
 message ListRoomResponse {
-  string status = 1;
-  repeated Room rooms = 2;
-  Error error = 3;
+  repeated Room rooms = 1;
 }
 
 message SubscribeRoomRequest {
@@ -40,11 +36,13 @@ message SubscribeRoomRequest {
 }
 
 message SubscribeRoomResponse {
-  int32 status = 1;
+  string userId = 1;
+  string roomId = 2;
 }
 
-message Error {
+message ErrorResponse {
   string description = 1;
+  repeated Room similar_rooms = 2;
 }
 
 message Room {

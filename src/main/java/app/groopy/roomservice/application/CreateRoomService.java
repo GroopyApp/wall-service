@@ -5,7 +5,7 @@ import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
 import app.groopy.roomservice.domain.models.common.GeneralStatus;
 import app.groopy.roomservice.domain.models.common.RoomStatus;
-import app.groopy.roomservice.domain.validators.CreateRoomValidator;
+import app.groopy.roomservice.application.validators.CreateRoomValidator;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
 import lombok.SneakyThrows;
@@ -17,6 +17,7 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -60,7 +61,6 @@ public class CreateRoomService {
         logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 
         return CreateRoomInternalResponse.builder()
-                .responseStatus(GeneralStatus.OK)
                 .room(RoomDetails.builder()
                         .roomId(topic.name())
                         .roomName(request.getRoomName())
@@ -77,6 +77,7 @@ public class CreateRoomService {
                 .append(
                  request.getRoomLocation().getLongitude()
                 );
+        sb.append(LocalDateTime.now());
         return sb.toString().getBytes();
     }
 }
