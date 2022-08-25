@@ -22,7 +22,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static app.groopy.roomservice.domain.models.common.RoomStatus.*;
 
@@ -57,10 +59,11 @@ public class ElasticsearchRoomRepository {
                 request.getHashtags().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("hashtags", v)));
                 break;
             case LOOKING_FOR_SIMILAR:
-                //FIXME this doesn't work, it should return a record if it matches at least 3 request hashtags!
-                request.getHashtags().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("hashtags", v)).minimumShouldMatch(3));
+                request.getHashtags().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("hashtags", v)));
                 break;
         }
+
+        request.getLanguages().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("languages", v)));
 
         GeoDistanceQueryBuilder geoBuilder = QueryBuilders.geoDistanceQuery("location");
         geoBuilder.point(new GeoPoint(request.getPoint().getLatitude(), request.getPoint().getLongitude()));
@@ -68,16 +71,26 @@ public class ElasticsearchRoomRepository {
         geoBuilder.distance(distance, DistanceUnit.METERS);
         queryBuilder.must(geoBuilder);
 
-
-        request.getLanguages().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("languages", v)));
-
         NativeSearchQuery query = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
                 .build();
 
         List<ESRoomEntity> entities = elasticsearchOperations.search(query, ESRoomEntity.class).stream().map(SearchHit::getContent).collect(Collectors.toList());
+        Stream<RoomDetails> stream = entities.stream().map(entity -> mapper.map(entity));
 
-        return entities.stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
+        //TODO find a better way with ES query to fetch values with at least n elements in common
+        if (!entities.isEmpty()) {
+            if (searchScope.equals(SearchScope.LOOKING_FOR_SIMILAR)) {
+                stream = stream.filter(room -> {
+                    Set<String> result = request.getHashtags().stream()
+                            .distinct()
+                            .filter(room.getHashtags()::contains)
+                            .collect(Collectors.toSet());
+                    return result.size() >= 3;
+                });
+            }
+        }
+        return stream.collect(Collectors.toList());
     }
 
     public List<RoomDetails> findByUserId(String userId) throws UserNotFoundException {
@@ -105,7 +118,8 @@ public class ElasticsearchRoomRepository {
     }
 
     public RoomDetails findByRoomName(String roomName) {
-        ESRoomEntity room = esRoomRepository.findESRoomEntityByRoomName(roomName).orElse(null);
-        return room != null ? mapper.map(room) : null;
+        ESRoomEntity room = esRoomRepository.findByRoomName(roomName).orElse(null);
+        //FIXME findByRoomName apparently doesn't work, find a way to match exactly the word and remove && room.getRoomName().equals(roomName) from code below
+        return room != null && room.getRoomName().equals(roomName) ? mapper.map(room) : null;
     }
 }
