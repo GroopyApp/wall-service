@@ -57,17 +57,16 @@ public class ElasticsearchRoomRepository {
                 request.getHashtags().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("hashtags", v)));
                 break;
             case LOOKING_FOR_SIMILAR:
-                request.getHashtags().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("hashtags", v)).minimumShouldMatch(3));
+                //FIXME this doesn't work, it should return a record if it matches at least 3 request hashtags!
+                request.getHashtags().forEach(v -> queryBuilder.must(QueryBuilders.matchQuery("hashtags", v)).minimumShouldMatch(3));
                 break;
         }
 
         GeoDistanceQueryBuilder geoBuilder = QueryBuilders.geoDistanceQuery("location");
         geoBuilder.point(new GeoPoint(request.getPoint().getLatitude(), request.getPoint().getLongitude()));
 
-        if (distance > 0) {
-         geoBuilder.distance(distance, DistanceUnit.METERS);
-         queryBuilder.must(geoBuilder);
-        }
+        geoBuilder.distance(distance, DistanceUnit.METERS);
+        queryBuilder.must(geoBuilder);
 
 
         request.getLanguages().forEach(v -> queryBuilder.should(QueryBuilders.matchQuery("languages", v)));
