@@ -6,12 +6,12 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
-      value-deserializer: app.groopy.roomservice.infrastructure.kafka.RoomServiceKafkaDeserializer
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+#    consumer:
+#      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-deserializer: app.groopy.roomservice.infrastructure.kafka.RoomServiceKafkaDeserializer
 
 elasticsearch:
   host: localhost
