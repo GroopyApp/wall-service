@@ -5,7 +5,7 @@ spring:
   application.name: room-service
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
@@ -14,5 +14,5 @@ spring:
       value-deserializer: app.groopy.roomservice.infrastructure.kafka.RoomServiceKafkaDeserializer
 
 elasticsearch:
-  host: elasticsearch
+  host: localhost
   port: 9200

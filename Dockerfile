@@ -6,7 +6,7 @@ FROM openjdk:11
 # Add a volume pointing to /tmp
 VOLUME /tmp
 
-EXPOSE 8091
+EXPOSE 8090
 
 
 RUN mkdir /app

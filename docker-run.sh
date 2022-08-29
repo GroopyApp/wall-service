@@ -1,2 +1,2 @@
-docker build -t room-service .
-docker run -d room-service --network=infrastructure
+docker-compose build
+docker-compose -p "groopy" up -d
