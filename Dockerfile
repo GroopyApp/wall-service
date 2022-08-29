@@ -15,4 +15,4 @@ COPY . /app
 RUN ./gradlew build
 
 
-ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar"]
+ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar","--spring.config.location=classpath:/docker.yaml"]
