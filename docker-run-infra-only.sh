@@ -1,0 +1,1 @@
+docker-compose up --scale room-service=0

@@ -7,8 +7,9 @@ plugins {
 }
 
 group = 'app.groopy'
-version = '0.0.1-SNAPSHOT'
+version = 1.0
 sourceCompatibility = '11'
+targetCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -18,7 +19,6 @@ configurations {
 
 project.ext {
 	googleProtobufVersion = '3.14.0'
-	arcgisVersion = '100.14.0'
 }
 
 repositories {

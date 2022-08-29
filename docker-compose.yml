@@ -1,13 +1,19 @@
 version: '2.1'
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:6.1.1
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
 
-  # reachable on 9092 from the host and on 29092 from inside docker compose
+  room-service:
+    restart: always
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    build: .
+    ports:
+      - "8090:8090"
+    expose:
+      - '8090'
+    networks:
+      - infrastructure
+
   kafka:
     image: confluentinc/cp-kafka:6.1.1
     depends_on:
@@ -15,7 +21,7 @@ services:
     ports:
       - '9092:9092'
     expose:
-      - '29092'
+      - '9092'
     environment:
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
@@ -23,19 +29,11 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
       KAFKA_MIN_INSYNC_REPLICAS: '1'
-
-#  cache:
-#    image: redis:6.2-alpine
-#    restart: always
-#    ports:
-#      - '6379:6379'
-#    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-#    volumes:
-#      - cache:/data
+    networks:
+      - infrastructure
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.5
-    container_name: elasticsearch
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
@@ -49,13 +47,43 @@ services:
       - number_of_replicas=0
       - xpack.monitoring.collection.indices=document, user
       - SPRING_DATA_JEST_URI=http://docy-elasticsearch:9200/
-
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+    expose:
+      - 9200
+    networks:
+      - infrastructure
+    healthcheck:
+      test: curl -u elastic:elastic -s -f elasticsearch:9200/_cat/health >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.1.1
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - infrastructure
+
+  #  cache:
+  #    image: redis:6.2-alpine
+  #    restart: always
+  #    ports:
+  #      - '6379:6379'
+  #    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+  #    volumes:
+  #      - cache:/data
+
 volumes:
 #  cache:
 #    driver: local
   elasticsearch-data:
     driver: local
+networks:
+  infrastructure:
+    driver: bridge

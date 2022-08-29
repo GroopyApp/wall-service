@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.List;
 
-import static app.groopy.roomservice.domain.elasticsearch.ESIndexes.USER_INDEX;
+import static app.groopy.roomservice.infrastructure.elasticsearch.repository.models.ESIndexes.USER_INDEX;
 
 @Data
 @Builder

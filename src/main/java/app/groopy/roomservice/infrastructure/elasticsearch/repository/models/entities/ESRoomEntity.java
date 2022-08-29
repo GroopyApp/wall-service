@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 import java.util.List;
 
-import static app.groopy.roomservice.domain.elasticsearch.ESIndexes.ROOM_INDEX;
+import static app.groopy.roomservice.infrastructure.elasticsearch.repository.models.ESIndexes.ROOM_INDEX;
 
 @Data
 @Builder
