@@ -10,6 +10,8 @@ services:
       - "8090:8090"
     expose:
       - '8090'
+    networks:
+      - infrastructure
 
   kafka:
     image: confluentinc/cp-kafka:6.1.1
@@ -26,6 +28,8 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: '1'
       KAFKA_MIN_INSYNC_REPLICAS: '1'
+    networks:
+      - infrastructure
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.5
@@ -53,6 +57,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - infrastructure
 
   zookeeper:
     image: confluentinc/cp-zookeeper:6.1.1
@@ -60,6 +66,8 @@ services:
       - "2181:2181"
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - infrastructure
 
   #  cache:
   #    image: redis:6.2-alpine
@@ -69,6 +77,10 @@ services:
   #    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
   #    volumes:
   #      - cache:/data
+
+networks:
+  infrastructure:
+    driver: bridge
 
 volumes:
 #  cache:
