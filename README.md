@@ -1,2 +1,14 @@
 # room-service
-Java room service for FF
+
+A java microservice to manage room operations in Groopy system
+
+## Running
+
+### Running as a java process
+To run the project locally as a java process you must run before [infrastructure](https://github.com/GroopyApp/infrastructure) docker container in order to have all the dependencies you need running.
+
+### Running as a docker container
+Running the project with docker allow us to create a complete environment, where we can also attach other services such as [user-service](https://github.com/GroopyApp/user-service)
+To run or attach room-service to docker environment you simply must run:
+
+`sh ./docker-run.sh`
