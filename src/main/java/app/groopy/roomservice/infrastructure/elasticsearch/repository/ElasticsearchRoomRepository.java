@@ -43,8 +43,8 @@ public class ElasticsearchRoomRepository {
     private ApplicationMapper mapper;
 
 
-    public void save(ESRoomEntity room) {
-        esRoomRepository.save(room);
+    public RoomDetails save(ESRoomEntity room) {
+        return mapper.map(esRoomRepository.save(room));
     }
 
     public List<RoomDetails> findBySearchRequest(ESRoomSearchRequest request, SearchScope searchScope) {
@@ -97,11 +97,12 @@ public class ElasticsearchRoomRepository {
 
         ESUserEntity user = esUserRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
-        List<ESRoomEntity> rooms = esRoomRepository.getESRoomEntitiesByRoomIdInAndStatusIn(user.getSubscribedRooms(),
+        //TODO find a better way to manage this case
+        List<ESRoomEntity> rooms = user.getSubscribedRooms() != null ? esRoomRepository.getESRoomEntitiesByRoomIdInAndStatusIn(user.getSubscribedRooms(),
                 List.of(
                         PENDING,
                         CREATED
-                ));
+                )) : new ArrayList<>();
 
         return rooms.stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
     }

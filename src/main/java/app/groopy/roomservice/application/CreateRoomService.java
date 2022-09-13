@@ -3,18 +3,15 @@ package app.groopy.roomservice.application;
 import app.groopy.roomservice.domain.models.CreateRoomInternalRequest;
 import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
-import app.groopy.roomservice.domain.models.common.GeneralStatus;
 import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.application.validators.CreateRoomValidator;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
 import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
 import lombok.SneakyThrows;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,13 +34,13 @@ public class CreateRoomService {
 
         final String roomId = UUID.nameUUIDFromBytes(assembleId(request)).toString();
 
-        NewTopic topic = TopicBuilder.name(roomId)
-                .partitions(6)
-                .replicas(3)
-                .compact()
-                .build();
+//        NewTopic topic = TopicBuilder.name(roomId)
+//                .partitions(6)
+//                .replicas(3)
+//                .compact()
+//                .build();
 
-        elasticSearchRoomRepository.save(
+        RoomDetails result = elasticSearchRoomRepository.save(
                 ESRoomEntity.builder()
                         .roomId(roomId)
                         .roomName(request.getRoomName())
@@ -56,15 +53,13 @@ public class CreateRoomService {
                                 request.getRoomLocation().getLongitude()))
                         .build());
 
-       elasticSearchRoomRepository.subscribeUserToRoom(request.getCreator(), roomId);
+       elasticSearchRoomRepository.subscribeUserToRoom(request.getCreator(), result.getRoomId());
 
-        logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
+       logger.info("Room correctly stored in ES");
+//        logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 
         return CreateRoomInternalResponse.builder()
-                .room(RoomDetails.builder()
-                        .roomId(topic.name())
-                        .roomName(request.getRoomName())
-                        .build())
+                .room(result)
                 .build();
     }
 

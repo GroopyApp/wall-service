@@ -11,7 +11,7 @@ import java.util.Optional;
 @RepositoryRestResource
 public interface ESRoomRepository extends ElasticsearchRepository<ESRoomEntity, String> {
 
-    List<ESRoomEntity> getESRoomEntitiesByRoomIdInAndStatusIn(List<String> roomdIds, List<RoomStatus> statuses);
+    List<ESRoomEntity> getESRoomEntitiesByRoomIdInAndStatusIn(List<String> roomIds, List<RoomStatus> statuses);
     Optional<ESRoomEntity> findByRoomName(String roomName);
 
 }

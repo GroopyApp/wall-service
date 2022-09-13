@@ -20,9 +20,6 @@ public interface PresentationMapper {
             @Mapping(target = "creator", source = "userId")})
     CreateRoomInternalRequest map(RoomServiceProto.CreateRoomRequest input);
 
-    @Mappings({
-            @Mapping(target = "roomId", source = "room.roomId"),
-            @Mapping(target = "roomName", source = "room.roomName")})
     RoomServiceProto.CreateRoomResponse map(CreateRoomInternalResponse input);
 
     @Mappings({

@@ -13,8 +13,7 @@ message CreateRoomRequest {
 }
 
 message CreateRoomResponse {
-  string room_id = 1;
-  string room_name = 2;
+  Room room = 1;
 }
 
 message ListRoomRequest {
