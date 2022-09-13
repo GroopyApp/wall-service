@@ -69,10 +69,7 @@ public class RoomServiceController {
     public ResponseEntity<RoomServiceProto.SubscribeRoomResponse> subscribe(@RequestBody RoomServiceProto.SubscribeRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         subscribeService.subscribe(payload.getUserId(), payload.getRoomId());
-        RoomServiceProto.SubscribeRoomResponse response = RoomServiceProto.SubscribeRoomResponse.newBuilder()
-                .setRoomId(payload.getRoomId())
-                .setUserId(payload.getUserId())
-                .build();
+        RoomServiceProto.SubscribeRoomResponse response = presentationMapper.map(subscribeService.subscribe(payload.getUserId(), payload.getRoomId()));
         LOGGER.info("Sending SubscribeRoomResponse {}", response);
         return ResponseEntity.ok(response);
     }

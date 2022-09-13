@@ -1,10 +1,7 @@
 package app.groopy.roomservice.presentation.mapper;
 
 import app.groopy.protobuf.RoomServiceProto;
-import app.groopy.roomservice.domain.models.CreateRoomInternalRequest;
-import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
-import app.groopy.roomservice.domain.models.ListRoomInternalRequest;
-import app.groopy.roomservice.domain.models.ListRoomInternalResponse;
+import app.groopy.roomservice.domain.models.*;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
 import org.mapstruct.*;
 
@@ -28,6 +25,8 @@ public interface PresentationMapper {
     ListRoomInternalRequest map(RoomServiceProto.ListRoomRequest input);
 
     RoomServiceProto.ListRoomResponse map(ListRoomInternalResponse input);
+
+    RoomServiceProto.SubscribeRoomResponse map(SubscribeInternalResponse input);
 
     @Mappings({
             @Mapping(target = "id", source = "roomId"),

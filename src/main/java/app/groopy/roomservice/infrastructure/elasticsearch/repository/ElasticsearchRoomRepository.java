@@ -107,8 +107,8 @@ public class ElasticsearchRoomRepository {
         return rooms.stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
     }
 
-    public void subscribeUserToRoom(String userId, String roomId) throws UserNotFoundException, RoomNotFoundException {
-        esRoomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
+    public RoomDetails subscribeUserToRoom(String userId, String roomId) throws UserNotFoundException, RoomNotFoundException {
+        ESRoomEntity room = esRoomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
         esUserRepository.findAll();
         ESUserEntity user = esUserRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         if (user.getSubscribedRooms() == null) {
@@ -116,6 +116,7 @@ public class ElasticsearchRoomRepository {
         }
         user.getSubscribedRooms().add(roomId);
         esUserRepository.save(user);
+        return mapper.map(room);
     }
 
     public RoomDetails findByRoomName(String roomName) {

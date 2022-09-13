@@ -36,7 +36,7 @@ message SubscribeRoomRequest {
 
 message SubscribeRoomResponse {
   string userId = 1;
-  string roomId = 2;
+  Room room = 2;
 }
 
 message ErrorResponse {
