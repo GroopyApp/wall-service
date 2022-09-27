@@ -1,13 +1,15 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository;
+package app.groopy.roomservice.infrastructure.services;
 
 import app.groopy.roomservice.application.mapper.ApplicationMapper;
 import app.groopy.roomservice.domain.exceptions.RoomNotFoundException;
 import app.groopy.roomservice.domain.exceptions.UserNotFoundException;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
 import app.groopy.roomservice.domain.models.common.SearchScope;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.dtos.ESRoomSearchRequest;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESUserEntity;
+import app.groopy.roomservice.infrastructure.repository.ESRoomRepository;
+import app.groopy.roomservice.infrastructure.repository.ESUserRepository;
+import app.groopy.roomservice.infrastructure.repository.models.entities.ESRoomEntity;
+import app.groopy.roomservice.infrastructure.repository.models.RoomSearchRequest;
+import app.groopy.roomservice.infrastructure.repository.models.entities.ESUserEntity;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -29,7 +31,7 @@ import java.util.stream.Stream;
 import static app.groopy.roomservice.domain.models.common.RoomStatus.*;
 
 @Repository
-public class ElasticsearchRoomRepository {
+public class ElasticsearchRoomService {
 
     private static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 10000;
     @Autowired
@@ -47,7 +49,7 @@ public class ElasticsearchRoomRepository {
         return mapper.map(esRoomRepository.save(room));
     }
 
-    public List<RoomDetails> findBySearchRequest(ESRoomSearchRequest request, SearchScope searchScope) {
+    public List<RoomDetails> findBySearchRequest(RoomSearchRequest request, SearchScope searchScope) {
 
         Integer distance = DEFAULT_SEARCH_RANGE_IN_METERS;
 

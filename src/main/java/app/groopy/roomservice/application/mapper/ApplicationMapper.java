@@ -2,7 +2,7 @@ package app.groopy.roomservice.application.mapper;
 
 
 import app.groopy.roomservice.domain.models.common.RoomDetails;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
+import app.groopy.roomservice.infrastructure.repository.models.entities.ESRoomEntity;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

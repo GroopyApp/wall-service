@@ -1,4 +1,4 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities;
+package app.groopy.roomservice.infrastructure.repository.models.entities;
 
 import app.groopy.roomservice.domain.models.common.RoomStatus;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 import java.util.List;
 
-import static app.groopy.roomservice.infrastructure.elasticsearch.repository.models.ESIndexes.ROOM_INDEX;
+import static app.groopy.roomservice.infrastructure.repository.models.ESIndexes.ROOM_INDEX;
 
 @Data
 @Builder

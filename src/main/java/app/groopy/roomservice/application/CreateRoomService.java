@@ -5,8 +5,8 @@ import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
 import app.groopy.roomservice.domain.models.common.RoomDetails;
 import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.application.validators.CreateRoomValidator;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.ElasticsearchRoomRepository;
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
+import app.groopy.roomservice.infrastructure.repository.models.entities.ESRoomEntity;
+import app.groopy.roomservice.infrastructure.services.ElasticsearchRoomService;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ public class CreateRoomService {
     private CreateRoomValidator validator;
 
     @Autowired
-    private ElasticsearchRoomRepository elasticSearchRoomRepository;
+    private ElasticsearchRoomService elasticSearchRoomService;
 
    @SneakyThrows
     public CreateRoomInternalResponse createRoom(CreateRoomInternalRequest request) {
@@ -40,7 +40,7 @@ public class CreateRoomService {
 //                .compact()
 //                .build();
 
-        RoomDetails result = elasticSearchRoomRepository.save(
+        RoomDetails result = elasticSearchRoomService.save(
                 ESRoomEntity.builder()
                         .roomId(roomId)
                         .roomName(request.getRoomName())
@@ -53,7 +53,7 @@ public class CreateRoomService {
                                 request.getRoomLocation().getLongitude()))
                         .build());
 
-       elasticSearchRoomRepository.subscribeUserToRoom(request.getCreator(), result.getRoomId());
+       elasticSearchRoomService.subscribeUserToRoom(request.getCreator(), result.getRoomId());
 
        logger.info("Room correctly stored in ES");
 //        logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);

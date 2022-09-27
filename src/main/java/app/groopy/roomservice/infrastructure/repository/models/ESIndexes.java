@@ -1,4 +1,4 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository.models;
+package app.groopy.roomservice.infrastructure.repository.models;
 
 public class ESIndexes {
 

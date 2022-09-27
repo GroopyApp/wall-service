@@ -1,4 +1,4 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities;
+package app.groopy.roomservice.infrastructure.repository.models.entities;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.util.List;
 
-import static app.groopy.roomservice.infrastructure.elasticsearch.repository.models.ESIndexes.USER_INDEX;
+import static app.groopy.roomservice.infrastructure.repository.models.ESIndexes.USER_INDEX;
 
 @Data
 @Builder

@@ -1,6 +1,6 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository;
+package app.groopy.roomservice.infrastructure.repository;
 
-import app.groopy.roomservice.infrastructure.elasticsearch.repository.models.entities.ESRoomEntity;
+import app.groopy.roomservice.infrastructure.repository.models.entities.ESRoomEntity;
 import app.groopy.roomservice.domain.models.common.RoomStatus;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

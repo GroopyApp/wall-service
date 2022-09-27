@@ -1,4 +1,4 @@
-package app.groopy.roomservice.infrastructure.elasticsearch.repository.models.dtos;
+package app.groopy.roomservice.infrastructure.repository.models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,9 +7,9 @@ import java.util.List;
 
 @Data
 @Builder
-public class ESRoomSearchRequest {
+public class RoomSearchRequest {
 
-    private ESPoint point;
+    private InternalGeoPoint point;
     private List<String> hashtags;
     private List<String> languages;
 }
