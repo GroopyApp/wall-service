@@ -1,6 +1,5 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.3'
-	id "org.springframework.cloud.contract" version "3.1.4"
 	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 	id 'java'
 	id "com.google.protobuf" version "0.8.19"
@@ -31,7 +30,6 @@ configurations {
 	natives
 }
 
-
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -48,8 +46,6 @@ dependencies {
 	implementation group: 'com.googlecode.protobuf-java-format', name: 'protobuf-java-format', version: '1.2'
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	implementation group: 'no.entur.mapstruct.spi', name: 'protobuf-spi-impl', version: '1.28'
-	implementation 'com.google.cloud:google-cloud-firestore:3.4.2'
-	implementation 'org.springframework.cloud:spring-cloud-gcp-data-firestore:1.2.8.RELEASE'
 
 	compileOnly 'org.projectlombok:lombok'
 //	runtimeOnly 'io.micrometer:micrometer-registry-new-relic'
