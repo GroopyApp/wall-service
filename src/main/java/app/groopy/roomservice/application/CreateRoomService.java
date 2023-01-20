@@ -1,12 +1,12 @@
 package app.groopy.roomservice.application;
 
-import app.groopy.roomservice.domain.models.CreateRoomInternalRequest;
-import app.groopy.roomservice.domain.models.CreateRoomInternalResponse;
-import app.groopy.roomservice.domain.models.common.RoomDetails;
+import app.groopy.roomservice.domain.models.CreateRoomRequestDto;
+import app.groopy.roomservice.domain.models.CreateRoomResponseDto;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
 import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.application.validators.CreateRoomValidator;
 import app.groopy.roomservice.infrastructure.repository.models.entities.ESRoomEntity;
-import app.groopy.roomservice.infrastructure.services.ElasticsearchRoomService;
+import app.groopy.roomservice.infrastructure.providers.ElasticsearchProvider;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +26,10 @@ public class CreateRoomService {
     private CreateRoomValidator validator;
 
     @Autowired
-    private ElasticsearchRoomService elasticSearchRoomService;
+    private ElasticsearchProvider elasticSearchProvider;
 
    @SneakyThrows
-    public CreateRoomInternalResponse createRoom(CreateRoomInternalRequest request) {
+    public CreateRoomResponseDto createRoom(CreateRoomRequestDto request) {
         validator.validate(request);
 
         final String roomId = UUID.nameUUIDFromBytes(assembleId(request)).toString();
@@ -40,7 +40,7 @@ public class CreateRoomService {
 //                .compact()
 //                .build();
 
-        RoomDetails result = elasticSearchRoomService.save(
+        RoomDetailsDTO result = elasticSearchProvider.save(
                 ESRoomEntity.builder()
                         .roomId(roomId)
                         .roomName(request.getRoomName())
@@ -53,17 +53,17 @@ public class CreateRoomService {
                                 request.getRoomLocation().getLongitude()))
                         .build());
 
-       elasticSearchRoomService.subscribeUserToRoom(request.getCreator(), result.getRoomId());
+       elasticSearchProvider.subscribeUserToRoom(request.getCreator(), result.getRoomId());
 
        logger.info("Room correctly stored in ES");
 //        logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
 
-        return CreateRoomInternalResponse.builder()
+        return CreateRoomResponseDto.builder()
                 .room(result)
                 .build();
     }
 
-    private byte[] assembleId(CreateRoomInternalRequest request) {
+    private byte[] assembleId(CreateRoomRequestDto request) {
         StringBuilder sb = new StringBuilder(request.getRoomName());
         request.getHashtags().forEach(sb::append);
         request.getLanguages().forEach(sb::append);

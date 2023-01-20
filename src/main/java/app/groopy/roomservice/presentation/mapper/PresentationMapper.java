@@ -2,7 +2,7 @@ package app.groopy.roomservice.presentation.mapper;
 
 import app.groopy.protobuf.RoomServiceProto;
 import app.groopy.roomservice.domain.models.*;
-import app.groopy.roomservice.domain.models.common.RoomDetails;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
@@ -15,21 +15,21 @@ public interface PresentationMapper {
             @Mapping(target = "roomLocation.latitude", source = "latitude"),
             @Mapping(target = "roomLocation.longitude", source = "longitude"),
             @Mapping(target = "creator", source = "userId")})
-    CreateRoomInternalRequest map(RoomServiceProto.CreateRoomRequest input);
+    CreateRoomRequestDto map(RoomServiceProto.CreateRoomRequest input);
 
-    RoomServiceProto.CreateRoomResponse map(CreateRoomInternalResponse input);
+    RoomServiceProto.CreateRoomResponse map(CreateRoomResponseDto input);
 
     @Mappings({
             @Mapping(target = "actualLatitude", source = "latitude"),
             @Mapping(target = "actualLongitude", source = "longitude")})
-    ListRoomInternalRequest map(RoomServiceProto.ListRoomRequest input);
+    ListRoomRequestDto map(RoomServiceProto.ListRoomRequest input);
 
-    RoomServiceProto.ListRoomResponse map(ListRoomInternalResponse input);
+    RoomServiceProto.ListRoomResponse map(ListRoomResponseDto input);
 
-    RoomServiceProto.SubscribeRoomResponse map(SubscribeInternalResponse input);
+    RoomServiceProto.SubscribeRoomResponse map(SubscribeResponseDto input);
 
     @Mappings({
             @Mapping(target = "id", source = "roomId"),
             @Mapping(target = "name", source = "roomName")})
-    RoomServiceProto.Room map(RoomDetails input);
+    RoomServiceProto.Room map(RoomDetailsDTO input);
 }

@@ -1,6 +1,5 @@
 package app.groopy.roomservice.domain.models;
 
-import app.groopy.roomservice.domain.models.common.RoomLocation;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,11 +7,11 @@ import java.util.List;
 
 @Data
 @Builder
-public class CreateRoomInternalRequest {
-
-    private String roomName;
+public class ListRoomRequestDto {
+    private Float actualLatitude;
+    private Float actualLongitude;
+    private Integer searchRangeInMeters;
     private List<String> hashtags;
     private List<String> languages;
-    private RoomLocation roomLocation;
-    private String creator;
+    private String userId;
 }

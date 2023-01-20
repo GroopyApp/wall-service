@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class RoomDetails {
+public class RoomDetailsDTO {
     private String roomId;
     private String roomName;
     private Float latitude;

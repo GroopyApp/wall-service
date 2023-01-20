@@ -1,9 +1,9 @@
-package app.groopy.roomservice.infrastructure.services;
+package app.groopy.roomservice.infrastructure.providers;
 
-import app.groopy.roomservice.application.mapper.ApplicationMapper;
+import app.groopy.roomservice.application.mapper.InfrastructureMapper;
 import app.groopy.roomservice.domain.exceptions.RoomNotFoundException;
 import app.groopy.roomservice.domain.exceptions.UserNotFoundException;
-import app.groopy.roomservice.domain.models.common.RoomDetails;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
 import app.groopy.roomservice.domain.models.common.SearchScope;
 import app.groopy.roomservice.infrastructure.repository.ESRoomRepository;
 import app.groopy.roomservice.infrastructure.repository.ESUserRepository;
@@ -30,26 +30,25 @@ import java.util.stream.Stream;
 
 import static app.groopy.roomservice.domain.models.common.RoomStatus.*;
 
-@Repository
-public class ElasticsearchRoomService {
+@Repository //This must be marked as a repository for elasticsearch limitations
+public class ElasticsearchProvider {
 
     private static final Integer DEFAULT_SEARCH_RANGE_IN_METERS = 10000;
     @Autowired
     private ESRoomRepository esRoomRepository;  //FIXME this is used just for save for indexing, find a way to remove it
-
     @Autowired
     private ESUserRepository esUserRepository;  //FIXME this is used just for save for indexing, find a way to remove it
     @Autowired
     private ElasticsearchOperations elasticsearchOperations;
     @Autowired
-    private ApplicationMapper mapper;
+    private InfrastructureMapper mapper;
 
 
-    public RoomDetails save(ESRoomEntity room) {
+    public RoomDetailsDTO save(ESRoomEntity room) {
         return mapper.map(esRoomRepository.save(room));
     }
 
-    public List<RoomDetails> findBySearchRequest(RoomSearchRequest request, SearchScope searchScope) {
+    public List<RoomDetailsDTO> findBySearchRequest(RoomSearchRequest request, SearchScope searchScope) {
 
         Integer distance = DEFAULT_SEARCH_RANGE_IN_METERS;
 
@@ -78,7 +77,7 @@ public class ElasticsearchRoomService {
                 .build();
 
         List<ESRoomEntity> entities = elasticsearchOperations.search(query, ESRoomEntity.class).stream().map(SearchHit::getContent).collect(Collectors.toList());
-        Stream<RoomDetails> stream = entities.stream().map(entity -> mapper.map(entity));
+        Stream<RoomDetailsDTO> stream = entities.stream().map(entity -> mapper.map(entity));
 
         //TODO find a better way with ES query to fetch values with at least n elements in common
         if (!entities.isEmpty()) {
@@ -95,7 +94,7 @@ public class ElasticsearchRoomService {
         return stream.collect(Collectors.toList());
     }
 
-    public List<RoomDetails> findByUserId(String userId) throws UserNotFoundException {
+    public List<RoomDetailsDTO> findByUserId(String userId) throws UserNotFoundException {
 
         ESUserEntity user = esUserRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
@@ -109,7 +108,7 @@ public class ElasticsearchRoomService {
         return rooms.stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
     }
 
-    public RoomDetails subscribeUserToRoom(String userId, String roomId) throws UserNotFoundException, RoomNotFoundException {
+    public RoomDetailsDTO subscribeUserToRoom(String userId, String roomId) throws UserNotFoundException, RoomNotFoundException {
         ESRoomEntity room = esRoomRepository.findById(roomId).orElseThrow(() -> new RoomNotFoundException(roomId));
         esUserRepository.findAll();
         ESUserEntity user = esUserRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
@@ -121,7 +120,7 @@ public class ElasticsearchRoomService {
         return mapper.map(room);
     }
 
-    public RoomDetails findByRoomName(String roomName) {
+    public RoomDetailsDTO findByRoomName(String roomName) {
         ESRoomEntity room = esRoomRepository.findByRoomName(roomName).orElse(null);
         //FIXME findByRoomName apparently doesn't work, find a way to match exactly the word and remove && room.getRoomName().equals(roomName) from code below
         return room != null && room.getRoomName().equals(roomName) ? mapper.map(room) : null;
