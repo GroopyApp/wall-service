@@ -1,14 +1,14 @@
 package app.groopy.roomservice.application;
 
 import app.groopy.roomservice.application.mapper.ApplicationMapper;
+import app.groopy.roomservice.domain.exceptions.CreateRoomException;
 import app.groopy.roomservice.domain.models.CreateRoomRequestDto;
 import app.groopy.roomservice.domain.models.CreateRoomResponseDto;
 import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
-import app.groopy.roomservice.application.validators.CreateRoomValidator;
+import app.groopy.roomservice.application.validators.RoomServiceValidator;
 import app.groopy.roomservice.infrastructure.ElasticsearchInfrastructureService;
+import app.groopy.roomservice.infrastructure.exceptions.ElasticsearchServiceException;
 import lombok.SneakyThrows;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +16,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
-public class CreateRoomService extends app.groopy.commons.application.Service<CreateRoomRequestDto, CreateRoomResponseDto> {
-
-    private final Logger logger = LoggerFactory.getLogger(CreateRoomService.class);
+public class CreateRoomService extends app.groopy.commons.application.StandardService<CreateRoomRequestDto, CreateRoomResponseDto> {
 
     @Autowired
-    private CreateRoomValidator validator;
+    private RoomServiceValidator validator;
     @Autowired
     private ApplicationMapper mapper;
     @Autowired
@@ -33,23 +31,21 @@ public class CreateRoomService extends app.groopy.commons.application.Service<Cr
 
         final String roomId = UUID.nameUUIDFromBytes(assembleId(request)).toString();
 
-//        NewTopic topic = TopicBuilder.name(roomId)
-//                .partitions(6)
-//                .replicas(3)
-//                .compact()
-//                .build();
+       try {
+           RoomDetailsDto result = mapper.map(infrastructureService.storeRoom(roomId, request));
 
-        RoomDetailsDto result = mapper.map(infrastructureService.storeRoom(roomId, request));
+           infrastructureService.subscribeUserToRoom(request.getCreator(), result.getRoomId());
 
-       infrastructureService.subscribeUserToRoom(request.getCreator(), result.getRoomId());
+           LOGGER.info("Room correctly stored in ES");
 
-       logger.info("Room correctly stored in ES");
-//        logger.info("topic for chat room {} correctly created: {}", request.getRoomName(), topic);
-
-        return CreateRoomResponseDto.builder()
-                .room(result)
-                .build();
-    }
+           return CreateRoomResponseDto.builder()
+                   .room(result)
+                   .build();
+       } catch (ElasticsearchServiceException e) {
+           LOGGER.error("an error occurred trying to create a room", e);
+           throw new CreateRoomException(request, e.getLocalizedMessage());
+       }
+   }
 
     private byte[] assembleId(CreateRoomRequestDto request) {
         StringBuilder sb = new StringBuilder(request.getRoomName());

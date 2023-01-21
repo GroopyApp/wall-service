@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RoomLocation {
+public class RoomLocationDto {
     private Float latitude;
     private Float longitude;
 }

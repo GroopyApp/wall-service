@@ -1,6 +1,6 @@
 package app.groopy.roomservice.domain.models.common;
 
-import app.groopy.commons.domain.models.RoomStatus;
+import app.groopy.providers.elasticsearch.models.RoomStatus;
 import lombok.Builder;
 import lombok.Data;
 

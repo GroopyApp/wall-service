@@ -1,15 +1,17 @@
 package app.groopy.roomservice.application.validators;
 
-import app.groopy.commons.infrastructure.providers.ElasticsearchProvider;
-import app.groopy.commons.infrastructure.repository.models.InternalGeoPoint;
-import app.groopy.commons.infrastructure.repository.models.RoomSearchRequest;
-import app.groopy.commons.infrastructure.repository.models.SearchScope;
+import app.groopy.providers.elasticsearch.ElasticsearchProvider;
+import app.groopy.providers.elasticsearch.models.InternalGeoPoint;
+import app.groopy.providers.elasticsearch.models.RoomSearchRequest;
+import app.groopy.providers.elasticsearch.models.SearchScope;
 import app.groopy.roomservice.application.mapper.ApplicationMapper;
 import app.groopy.roomservice.domain.exceptions.CreateRoomValuesValidationException;
 import app.groopy.roomservice.domain.exceptions.RoomWithExistingNameException;
 import app.groopy.roomservice.domain.exceptions.SimilarRoomsExistException;
 import app.groopy.roomservice.domain.models.CreateRoomRequestDto;
+import app.groopy.roomservice.domain.models.ListRoomRequestDto;
 import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CreateRoomValidator {
+public class RoomServiceValidator {
 
     @Autowired
     private ApplicationMapper mapper;
@@ -27,13 +29,23 @@ public class CreateRoomValidator {
     private static final String HASHTAG_REGEX = "^#[^ !@#$%^&*(),.?\":{}|<>]*$";
     private static final String LANGUAGE_REGEX = "^[a-z]{2}-[A-Z]{2}$";
 
-    public void validate(CreateRoomRequestDto request) throws CreateRoomValuesValidationException, SimilarRoomsExistException, RoomWithExistingNameException {
+    @SneakyThrows
+    public void validate(CreateRoomRequestDto request) {
         patternMatch(HASHTAG_REGEX, request.getHashtags(), "hashtags");
         patternMatch(LANGUAGE_REGEX, request.getLanguages(), "languages");
         roomDoesntExists(request);
         isUserAllowed(request.getCreator());
     }
 
+    public void validate(ListRoomRequestDto request) {
+        //TODO add logic
+    }
+
+    public void validate(String userId) {
+        //TODO add logic
+    }
+
+    @SneakyThrows
     private void roomDoesntExists(CreateRoomRequestDto request) throws RoomWithExistingNameException, SimilarRoomsExistException {
         RoomDetailsDto roomWithSameName = mapper.map(elasticSearchProvider.findByRoomName(request.getRoomName()));
         if (roomWithSameName != null) {

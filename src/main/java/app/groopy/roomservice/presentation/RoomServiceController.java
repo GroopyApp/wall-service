@@ -1,6 +1,6 @@
 package app.groopy.roomservice.presentation;
 
-import app.groopy.commons.infrastructure.repository.models.SearchScope;
+import app.groopy.providers.elasticsearch.models.SearchScope;
 import app.groopy.roomservice.application.CreateRoomService;
 import app.groopy.roomservice.application.ListRoomService;
 import app.groopy.roomservice.application.SubscribeService;
