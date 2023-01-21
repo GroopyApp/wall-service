@@ -1,13 +1,11 @@
 package app.groopy.roomservice.presentation;
 
+import app.groopy.commons.infrastructure.repository.models.SearchScope;
 import app.groopy.roomservice.application.CreateRoomService;
 import app.groopy.roomservice.application.ListRoomService;
 import app.groopy.roomservice.application.SubscribeService;
-import app.groopy.roomservice.domain.models.common.GeneralStatus;
-import app.groopy.roomservice.domain.models.common.RoomStatus;
 import app.groopy.roomservice.presentation.mapper.PresentationMapper;
 import app.groopy.protobuf.RoomServiceProto;
-import app.groopy.roomservice.domain.models.common.SearchScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class RoomServiceController {
     public ResponseEntity<RoomServiceProto.CreateRoomResponse> createRoom(@RequestBody RoomServiceProto.CreateRoomRequest payload) {
         LOGGER.info("Processing message {}", payload);
         RoomServiceProto.CreateRoomResponse response = presentationMapper.map(
-                createRoomService.createRoom(presentationMapper.map(payload))
+                createRoomService.perform(presentationMapper.map(payload))
         );
         return ResponseEntity.ok(response);
     }
@@ -57,7 +55,7 @@ public class RoomServiceController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoomServiceProto.ListRoomResponse> listRooms(@PathVariable("userId") String userId) {
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
-                listRoomService.listRoom(userId)
+                listRoomService.perform(userId)
         );
         LOGGER.info("Sending ListRoomResponse {}", response);
         return ResponseEntity.ok(response);

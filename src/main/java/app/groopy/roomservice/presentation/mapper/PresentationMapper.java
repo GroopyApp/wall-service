@@ -2,7 +2,7 @@ package app.groopy.roomservice.presentation.mapper;
 
 import app.groopy.protobuf.RoomServiceProto;
 import app.groopy.roomservice.domain.models.*;
-import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
@@ -31,5 +31,5 @@ public interface PresentationMapper {
     @Mappings({
             @Mapping(target = "id", source = "roomId"),
             @Mapping(target = "name", source = "roomName")})
-    RoomServiceProto.Room map(RoomDetailsDTO input);
+    RoomServiceProto.Room map(RoomDetailsDto input);
 }

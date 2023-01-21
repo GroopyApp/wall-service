@@ -1,14 +1,14 @@
 package app.groopy.roomservice.domain.exceptions;
 
-import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class SimilarRoomsExistException extends Throwable {
 
-    List<RoomDetailsDTO> alternativeRooms;
-    public SimilarRoomsExistException(List<String> hashtags, List<String> languages, List<RoomDetailsDTO> rooms) {
+    List<RoomDetailsDto> alternativeRooms;
+    public SimilarRoomsExistException(List<String> hashtags, List<String> languages, List<RoomDetailsDto> rooms) {
         super(
                 "Impossible to create room, similar rooms have been found in the system with following params: " +
                         "hashtags=" +
@@ -19,7 +19,7 @@ public class SimilarRoomsExistException extends Throwable {
         this.alternativeRooms = rooms;
     }
 
-    public List<RoomDetailsDTO> getAlternativeRooms() {
+    public List<RoomDetailsDto> getAlternativeRooms() {
         return alternativeRooms;
     }
 }

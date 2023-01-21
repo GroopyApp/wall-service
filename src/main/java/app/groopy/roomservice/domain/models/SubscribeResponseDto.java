@@ -1,6 +1,6 @@
 package app.groopy.roomservice.domain.models;
 
-import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,5 +8,5 @@ import lombok.Data;
 @Builder
 public class SubscribeResponseDto {
     private String userId;
-    private RoomDetailsDTO room;
+    private RoomDetailsDto room;
 }

@@ -1,8 +1,9 @@
 package app.groopy.roomservice.application;
 
+import app.groopy.roomservice.application.mapper.ApplicationMapper;
 import app.groopy.roomservice.domain.models.SubscribeResponseDto;
-import app.groopy.roomservice.domain.models.common.RoomDetailsDTO;
-import app.groopy.roomservice.infrastructure.providers.ElasticsearchProvider;
+import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
+import app.groopy.roomservice.infrastructure.ElasticsearchInfrastructureService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Service;
 public class SubscribeService {
 
     @Autowired
-    private ElasticsearchProvider elasticSearchProvider;
+    private ApplicationMapper mapper;
+    @Autowired
+    private ElasticsearchInfrastructureService infrastructureService;
 
     @SneakyThrows
     public SubscribeResponseDto subscribe(String userId, String roomId) {
-        RoomDetailsDTO room = elasticSearchProvider.subscribeUserToRoom(userId, roomId);
+        RoomDetailsDto room = mapper.map(infrastructureService.subscribeUserToRoom(userId, roomId));
         return SubscribeResponseDto.builder()
                 .userId(userId)
                 .room(room)
