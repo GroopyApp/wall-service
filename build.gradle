@@ -34,7 +34,7 @@ configurations {
 
 dependencies {
 	implementation 'app.groopy:groopy-commons:1.0.5'
-	implementation 'app.groopy:elasticsearch-provider:1.0.0'
+	implementation 'app.groopy:elasticsearch-provider:1.0.1'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
