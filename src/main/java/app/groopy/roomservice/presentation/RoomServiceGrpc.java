@@ -6,6 +6,7 @@ import app.groopy.roomservice.application.CreateRoomService;
 import app.groopy.roomservice.application.ListRoomService;
 import app.groopy.roomservice.application.SubscribeService;
 import app.groopy.roomservice.presentation.mapper.PresentationMapper;
+import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ import net.devh.boot.grpc.server.service.GrpcService;
 
 
 @GrpcService
-public class RoomServiceGRPCController extends RoomServiceGrpc.RoomServiceImplBase {
+public class RoomServiceGrpc extends app.groopy.protobuf.RoomServiceGrpc.RoomServiceImplBase {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(RoomServiceGRPCController.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(RoomServiceGrpc.class);
     @Autowired
     private CreateRoomService createRoomService;
     @Autowired
