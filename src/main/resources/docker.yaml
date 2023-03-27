@@ -16,3 +16,9 @@ spring:
 elasticsearch:
   host: elasticsearch
   port: 9200
+
+grpc:
+  server:
+    port: 8070
+    security:
+      enabled: false

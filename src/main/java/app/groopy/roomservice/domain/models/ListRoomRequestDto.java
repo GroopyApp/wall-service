@@ -13,5 +13,4 @@ public class ListRoomRequestDto {
     private Integer searchRangeInMeters;
     private List<String> hashtags;
     private List<String> languages;
-    private String userId;
 }
