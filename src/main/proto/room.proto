@@ -3,6 +3,13 @@ package roomservice;
 option java_package = "app.groopy.protobuf";
 option java_outer_classname = "RoomServiceProto";
 
+service RoomService {
+  rpc createRoom (CreateRoomRequest) returns (CreateRoomResponse) {};
+  rpc searchRoom (ListRoomRequest) returns (ListRoomResponse) {};
+  rpc listRoom (ListRoomRequest) returns (ListRoomResponse) {};
+  rpc subscribe (SubscribeRoomRequest) returns (SubscribeRoomResponse) {};
+  }
+
 message CreateRoomRequest {
   string room_name = 1;
   repeated string hashtags = 2;
