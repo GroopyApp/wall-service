@@ -1,6 +1,3 @@
-server:
-  port: 8090
-  address: localhost
 spring:
   application.name: room-service
 
