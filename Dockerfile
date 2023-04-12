@@ -8,11 +8,10 @@ VOLUME /tmp
 
 EXPOSE 8090
 
-
 RUN mkdir /app
 WORKDIR /app
-COPY . /app
+COPY . .
 RUN ./gradlew build
 
 
-ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar","--spring.config.location=classpath:/docker.yaml"]
+ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar", "-spring.profiles.active=prod" ,"--spring.config.location=classpath:/docker.yaml"]
