@@ -6,7 +6,7 @@ FROM openjdk:17
 # Add a volume pointing to /tmp
 VOLUME /tmp
 
-EXPOSE 8090
+EXPOSE 8070
 
 RUN mkdir /app
 WORKDIR /app
