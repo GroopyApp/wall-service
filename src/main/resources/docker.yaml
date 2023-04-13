@@ -2,7 +2,7 @@ spring:
   application.name: room-service
 
 elasticsearch:
-  host: 0.0.0.0
+  host: elasticsearch
   port: 9200
 
 grpc:
