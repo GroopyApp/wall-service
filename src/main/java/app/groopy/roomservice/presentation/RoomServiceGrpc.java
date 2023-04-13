@@ -4,7 +4,10 @@ import app.groopy.protobuf.RoomServiceProto;
 import app.groopy.providers.elasticsearch.models.SearchScope;
 import app.groopy.roomservice.application.CreateRoomService;
 import app.groopy.roomservice.application.ListRoomService;
+import app.groopy.roomservice.application.SearchRoomService;
 import app.groopy.roomservice.application.SubscribeService;
+import app.groopy.roomservice.domain.models.ContextWrappedRequestDto;
+import app.groopy.roomservice.domain.models.ListRoomRequestDto;
 import app.groopy.roomservice.presentation.mapper.PresentationMapper;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -21,6 +24,8 @@ public class RoomServiceGrpc extends app.groopy.protobuf.RoomServiceGrpc.RoomSer
     private CreateRoomService createRoomService;
     @Autowired
     private ListRoomService listRoomService;
+    @Autowired
+    private SearchRoomService searchRoomService;
     @Autowired
     private SubscribeService subscribeService;
     @Autowired
@@ -41,7 +46,10 @@ public class RoomServiceGrpc extends app.groopy.protobuf.RoomServiceGrpc.RoomSer
     public void searchRoom(RoomServiceProto.ListRoomRequest request, StreamObserver<RoomServiceProto.ListRoomResponse> responseObserver) {
         LOGGER.info("Processing message {}", request);
         RoomServiceProto.ListRoomResponse response = presentationMapper.map(
-                listRoomService.searchRoom(presentationMapper.map(request), SearchScope.STANDARD_SEARCH)
+                searchRoomService.perform(ContextWrappedRequestDto.<ListRoomRequestDto, SearchScope>builder()
+                                .requestDto(presentationMapper.map(request))
+                        .context(SearchScope.STANDARD_SEARCH)
+                        .build())
         );
         LOGGER.info("Sending ListRoomResponse {}", response);
         responseObserver.onNext(response);

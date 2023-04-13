@@ -6,6 +6,7 @@ import app.groopy.roomservice.application.mapper.ApplicationMapper;
 import app.groopy.roomservice.application.validators.RoomServiceValidator;
 import app.groopy.roomservice.domain.exceptions.ListRoomException;
 import app.groopy.roomservice.domain.exceptions.ListUserRoomException;
+import app.groopy.roomservice.domain.models.ContextWrappedRequestDto;
 import app.groopy.roomservice.domain.models.ListRoomRequestDto;
 import app.groopy.roomservice.domain.models.ListRoomResponseDto;
 import app.groopy.roomservice.domain.models.common.RoomDetailsDto;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ListRoomService extends StandardService<String, ListRoomResponseDto> {
+public class SearchRoomService extends StandardService<ContextWrappedRequestDto<ListRoomRequestDto, SearchScope>, ListRoomResponseDto> {
 
     @Autowired
     private RoomServiceValidator validator;
@@ -30,16 +31,17 @@ public class ListRoomService extends StandardService<String, ListRoomResponseDto
     private ElasticsearchInfrastructureService infrastructureService;
 
     @SneakyThrows
-    public ListRoomResponseDto perform(String userId) {
-        validator.validate(userId);
+    public ListRoomResponseDto perform(ContextWrappedRequestDto<ListRoomRequestDto, SearchScope> requestDto) {
+        validator.validate(requestDto.getRequestDto());
         try {
-            List<RoomDetailsDto> result = infrastructureService.findByUserId(userId).stream().map(entity -> mapper.map(entity)).collect(Collectors.toList());
+            List<RoomDetailsDto> result = infrastructureService.findBySearchRequest(requestDto.getRequestDto(), requestDto.getContext()).stream()
+                    .map(entity -> mapper.map(entity)).collect(Collectors.toList());
             return ListRoomResponseDto.builder()
                     .rooms(result)
                     .build();
         } catch (ElasticsearchServiceException e) {
-            LOGGER.error("an error occurred trying to search for rooms for a user", e);
-            throw new ListUserRoomException(userId, e.getLocalizedMessage());
+            LOGGER.error("an error occurred trying to search for rooms", e);
+            throw new ListRoomException(requestDto.getRequestDto(), e.getLocalizedMessage());
         }
     }
 }

@@ -1,5 +1,5 @@
 # Start with a base image containing Java runtime
-FROM openjdk:17
+FROM openjdk:latest
 
 # Add Maintainer Info
 
@@ -11,7 +11,7 @@ EXPOSE 8090
 RUN mkdir /app
 WORKDIR /app
 COPY . .
-RUN ./gradlew build
+RUN ./gradlew clean build
 
 
 ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar", "-spring.profiles.active=prod" ,"--spring.config.location=classpath:/docker.yaml"]
