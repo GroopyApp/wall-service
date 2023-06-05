@@ -1,7 +1,7 @@
 version: '2.1'
 services:
 
-  room-service:
+  wall-service:
     depends_on:
       elasticsearch:
         condition: service_healthy

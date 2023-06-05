@@ -1,6 +1,6 @@
-# room-service
+# wall-service
 
-A java microservice to manage room operations in Groopy system
+A java microservice to manage wall operations in Groopy system
 
 ## Running
 
@@ -9,6 +9,6 @@ To run the project locally as a java process you must run before [infrastructure
 
 ### Running as a docker container
 Running the project with docker allow us to create a complete environment, where we can also attach other services such as [user-service](https://github.com/GroopyApp/user-service)
-To run or attach room-service to docker environment you simply must run:
+To run or attach wall-service to docker environment you simply must run:
 
 `sh ./docker-run.sh`

@@ -1,5 +1,5 @@
 spring:
-  application.name: room-service
+  application.name: wall-service
 
 elasticsearch:
   host: elasticsearch
