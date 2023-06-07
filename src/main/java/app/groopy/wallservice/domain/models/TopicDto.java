@@ -11,8 +11,9 @@ public class TopicDto {
     private String id;
     private String name;
     private String description;
+    private String imageUrl;
     private List<String> categories;
     private String language;
-    private String chatId;
     private List<EventDto> events;
+    private String chatId;
 }

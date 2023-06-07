@@ -11,6 +11,7 @@ public class CreateTopicRequestDto {
     String wallId;
     String name;
     String description;
+    String imageUrl;
     List<String> categories;
     String language;
 }

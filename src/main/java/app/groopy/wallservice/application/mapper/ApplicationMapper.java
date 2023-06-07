@@ -7,7 +7,6 @@ import app.groopy.wallservice.infrastructure.models.TopicEntity;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 
-import java.util.List;
 
 @Mapper(componentModel = "spring", collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface ApplicationMapper {
@@ -16,8 +15,4 @@ public interface ApplicationMapper {
 
     EventDto map(EventEntity input);
 
-//    @Mappings({
-//            @Mapping(target = "latitude", source = "location.lat"),
-//            @Mapping(target = "longitude", source = "location.lon")})
-//    RoomDetailsDto map(RoomEntity input);
 }

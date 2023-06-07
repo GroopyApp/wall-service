@@ -31,8 +31,9 @@ message CreateTopicRequest {
   string wall_id = 1;
   string name = 2;
   string description = 3;
-  repeated string categories = 4;
-  string language = 5;
+  string image_url = 4;
+  repeated string categories = 5;
+  string language = 6;
 }
 
 message CreateTopicResponse {
@@ -41,10 +42,12 @@ message CreateTopicResponse {
 
 message CreateEventRequest {
   string topic_id = 1;
-  string description = 2;
-  Location location = 3;
-  string start_date = 4;
-  string end_date = 5;
+  string name = 2;
+  string description = 3;
+  Location location = 4;
+  string image_url = 5;
+  string start_date = 6;
+  string end_date = 7;
 }
 
 message CreateEventResponse {
@@ -55,20 +58,23 @@ message Topic {
   string id = 1;
   string name = 2;
   string description = 3;
-  repeated string categories = 4;
-  string language = 5;
-  repeated Event events = 6;
-  string chat_id = 7;
+  string image_url = 4;
+  repeated string categories = 5;
+  string language = 6;
+  repeated Event events = 7;
+  string chat_id = 8;
 }
 
 message Event {
   string id = 1;
-  string description = 2;
-  Location location = 3;
-  string start_date = 4;
-  string end_date = 5;
-  string chat_id = 6;
-  int32 participants = 7;
+  string name = 2;
+  string description = 3;
+  Location location = 4;
+  string image_url = 5;
+  string start_date = 6;
+  string end_date = 7;
+  string chat_id = 8;
+  int32 participants = 9;
 }
 
 message SearchCriteria {
