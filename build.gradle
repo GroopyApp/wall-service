@@ -8,6 +8,7 @@ plugins {
 }
 
 apply plugin: 'groovy'
+apply plugin: 'idea'
 
 group = 'app.groopy'
 version = 1.0
@@ -26,9 +27,6 @@ project.ext {
 }
 
 repositories {
-	maven {
-		url 'https://groopyapp.jfrog.io/artifactory/groopy/'
-	}
 	mavenCentral()
 }
 
