@@ -2,11 +2,15 @@ package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
 import app.groopy.wallservice.infrastructure.models.Entity;
+import app.groopy.wallservice.infrastructure.models.EventEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class Validator {
@@ -24,6 +28,15 @@ public class Validator {
         T result = mongoTemplate.findOne(query, clazz);
         if (result != null) {
             throw new EntityAlreadyExistsException(clazz, result.getId());
+        }
+    }
+
+    public void validate(String identifier, List<EventEntity> events) throws EntityAlreadyExistsException {
+        Optional<EventEntity> eventEntity = events.stream()
+                .filter(event -> event.getIdentifier().equals(identifier))
+                .findFirst();
+        if (eventEntity.isPresent()) {
+            throw new EntityAlreadyExistsException(EventEntity.class, eventEntity.get().getIdentifier());
         }
     }
 }

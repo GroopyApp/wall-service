@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @Document("topic")
 public class TopicEntity extends Entity {
-
     private String name;
     private String description;
     private List<String> categories;

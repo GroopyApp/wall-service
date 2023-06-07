@@ -14,4 +14,5 @@ public class EventEntity {
     Integer participants;
     String eventLocationId;
     String chatId;
+    String identifier;
 }

@@ -9,4 +9,5 @@ public class ErrorDto {
     String entityName;
     String existingEntityId;
     String errorDescription;
+    String notFoundId;
 }

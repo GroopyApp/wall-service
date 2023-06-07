@@ -2,20 +2,24 @@ package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
+import app.groopy.wallservice.domain.exceptions.WallNotFoundException;
+import app.groopy.wallservice.domain.exceptions.TopicNotFoundException;
+import app.groopy.wallservice.domain.models.CreateEventRequestDto;
 import app.groopy.wallservice.domain.models.CreateTopicRequestDto;
 import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.domain.models.TopicDto;
 import app.groopy.wallservice.domain.utils.UUIDUtils;
+import app.groopy.wallservice.infrastructure.models.EventEntity;
 import app.groopy.wallservice.infrastructure.models.TopicEntity;
 import app.groopy.wallservice.infrastructure.models.WallEntity;
 import app.groopy.wallservice.infrastructure.repository.TopicRepository;
 import app.groopy.wallservice.infrastructure.repository.WallRepository;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,19 +42,13 @@ public class CrudService {
         this.applicationMapper = applicationMapper;
     }
 
-    public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) {
+    public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) throws WallNotFoundException {
         Optional<WallEntity> wall = wallRepository.findByLocationId(requestCriteria.getLocation().getLocationId());
-        if (wall.isPresent()) {
-            List<TopicDto> topics = applicationMapper.map(
-                    topicRepository.findAllByWallIdEqualsAndCategoriesContainsAndLanguageIn(
-                            wall.get().getId(),
-                            requestCriteria.getHashtags(),
-                            requestCriteria.getLanguages())
-            );
-            return topics;
-        } else {
-            return null;
-        }
+        return wall.map(wallEntity -> topicRepository.findAllByWallIdEqualsAndCategoriesContainsAndLanguageIn(
+                wallEntity.getId(),
+                requestCriteria.getHashtags(),
+                requestCriteria.getLanguages()).stream().map(applicationMapper::map).toList())
+                .orElseThrow(() -> new WallNotFoundException(requestCriteria.getLocation().getLocationId()));
     }
 
     public TopicDto createTopic(CreateTopicRequestDto createTopicRequest) throws EntityAlreadyExistsException {
@@ -62,8 +60,27 @@ public class CrudService {
                 .description(createTopicRequest.getDescription())
                 .language(createTopicRequest.getLanguage())
                 .categories(createTopicRequest.getCategories())
+                .events(new ArrayList<>())
                 .chatId(identifier)
                 .build());
+        return applicationMapper.map(topic);
+    }
+
+    public TopicDto createEvent(CreateEventRequestDto createEventRequest) throws EntityAlreadyExistsException, TopicNotFoundException {
+        TopicEntity topic = topicRepository.findById(createEventRequest.getTopicId())
+                .orElseThrow(() -> new TopicNotFoundException(createEventRequest.getTopicId()));
+        var identifier = UUIDUtils.generateUUID(createEventRequest);
+        validator.validate(identifier, topic.getEvents());
+        topic.getEvents().add(EventEntity.builder()
+                        .identifier(identifier)
+                        .chatId(identifier)
+                        .eventLocationId(createEventRequest.getLocationId())
+                        .description(createEventRequest.getDescription())
+                        .startDate(createEventRequest.getStartDate())
+                        .endDate(createEventRequest.getEndDate())
+                        .participants(0)
+                .build());
+        topic = topicRepository.save(topic);
         return applicationMapper.map(topic);
     }
 }

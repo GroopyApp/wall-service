@@ -3,14 +3,13 @@ package app.groopy.wallservice.infrastructure.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 public abstract class Entity {
-    @Id
-    @Field("_id")
+    @MongoId(value = FieldType.OBJECT_ID)
     private String id;
 }

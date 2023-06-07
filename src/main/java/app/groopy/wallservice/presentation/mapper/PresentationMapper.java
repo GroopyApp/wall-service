@@ -15,6 +15,10 @@ public interface PresentationMapper {
 
     CreateTopicRequestDto map(WallServiceProto.CreateTopicRequest input);
 
+    @Mappings({
+            @Mapping(target = "locationId", source = "location.locationId")})
+    CreateEventRequestDto map(WallServiceProto.CreateEventRequest input);
+
     SearchCriteriaDto map(WallServiceProto.SearchCriteria input);
 
     LocationDto map(WallServiceProto.Location input);
@@ -29,6 +33,9 @@ public interface PresentationMapper {
     // DTO to PROTO
     WallServiceProto.Topic map(TopicDto input);
 
+    @Mappings({
+            @Mapping(target = "location.locationId", source = "eventLocationId")
+    })
     WallServiceProto.Event map(EventDto input);
 
     WallServiceProto.ErrorResponse map(ErrorDto input);

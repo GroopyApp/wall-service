@@ -11,10 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface ApplicationMapper {
-
-
-    List<TopicDto> map(List<TopicEntity> input);
-
+    
     TopicDto map(TopicEntity input);
 
     EventDto map(EventEntity input);

@@ -7,12 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class EventDto {
+public class CreateEventRequestDto {
+    String topicId;
     String description;
+    String locationId;
     LocalDateTime startDate;
     LocalDateTime endDate;
-    Integer participants;
-    String eventLocationId;
-    String chatId;
-    String identifier;
 }

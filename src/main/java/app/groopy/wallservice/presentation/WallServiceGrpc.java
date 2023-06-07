@@ -5,7 +5,6 @@ import app.groopy.wallservice.application.ApplicationService;
 import app.groopy.wallservice.application.exception.ApplicationException;
 import app.groopy.wallservice.presentation.mapper.PresentationMapper;
 import app.groopy.wallservice.presentation.resolver.ErrorResolver;
-import io.grpc.protobuf.StatusProto;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,30 +29,47 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
     @Override
     public void getWall(WallServiceProto.GetWallRequest request, StreamObserver<WallServiceProto.GetWallResponse> responseObserver) {
         LOGGER.info("Processing GetWallRequest {}", request);
-        responseObserver.onNext(WallServiceProto.GetWallResponse.newBuilder().addAllTopics(
-                applicationService.get(presentationMapper.map(request.getCriteria())).stream()
-                        .map(presentationMapper::map)
-                        .toList())
-                .build());
-        responseObserver.onCompleted();
+        try {
+            responseObserver.onNext(WallServiceProto.GetWallResponse.newBuilder().addAllTopics(
+                            applicationService.get(presentationMapper.map(request.getCriteria())).stream()
+                                    .map(presentationMapper::map)
+                                    .toList())
+                    .build());
+            responseObserver.onCompleted();
+        } catch (ApplicationException e) {
+            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
+        }
     }
 
     @Override
     public void createTopic(WallServiceProto.CreateTopicRequest request, StreamObserver<WallServiceProto.CreateTopicResponse> responseObserver) {
         LOGGER.info("Processing CreateTopicRequest {}", request);
-        WallServiceProto.CreateTopicResponse.Builder builder = WallServiceProto.CreateTopicResponse.newBuilder();
         try {
-            builder.setTopic(presentationMapper.map(
+            responseObserver.onNext(WallServiceProto.CreateTopicResponse.newBuilder()
+                    .setTopic(presentationMapper.map(
                             applicationService.create(
-                                    presentationMapper.map(request)
-                            )));
-            responseObserver.onNext(builder.build());
+                            presentationMapper.map(request))
+                    )).build());
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(StatusProto.toStatusRuntimeException(
-                    ErrorResolver.resolve(e.getErrorResponse()))
-            );
+            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
+        }
+    }
+
+    @Override
+    public void createEvent(WallServiceProto.CreateEventRequest request, StreamObserver<WallServiceProto.CreateEventResponse> responseObserver) {
+        LOGGER.info("Processing CreateEventRequest {}", request);
+        try {
+            responseObserver.onNext(WallServiceProto.CreateEventResponse.newBuilder()
+                    .setTopic(presentationMapper.map(
+                            applicationService.create(
+                                    presentationMapper.map(request))
+                    )).build());
+            responseObserver.onCompleted();
+        }
+        catch (ApplicationException e) {
+            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
         }
     }
 }
