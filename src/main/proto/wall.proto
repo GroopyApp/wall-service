@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package wallservice;
+option java_package = "app.groopy.protobuf";
+option java_outer_classname = "WallServiceProto";
+
+service WallService {
+  rpc getWall (GetWallRequest) returns (GetWallResponse) {};
+  rpc getTopic (GetTopicRequest) returns (GetTopicResponse) {};
+  rpc createTopic (CreateTopicRequest) returns (CreateTopicResponse) {};
+  rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
+}
+
+message GetWallRequest {
+  SearchCriteria criteria = 1;
+}
+
+message GetWallResponse {
+  repeated Topic topics = 1;
+}
+
+message GetTopicRequest {
+  string id = 1;
+}
+
+message GetTopicResponse {
+  Topic topic = 1;
+}
+
+message CreateTopicRequest {
+  string wall_id = 1;
+  string name = 2;
+  string description = 3;
+  string image_url = 4;
+  repeated string categories = 5;
+  string language = 6;
+}
+
+message CreateTopicResponse {
+    Topic topic = 1;
+}
+
+message CreateEventRequest {
+  string topic_id = 1;
+  string name = 2;
+  string description = 3;
+  Location location = 4;
+  string image_url = 5;
+  string start_date = 6;
+  string end_date = 7;
+}
+
+message CreateEventResponse {
+  Topic topic = 1;
+}
+
+message Topic {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string image_url = 4;
+  repeated string categories = 5;
+  string language = 6;
+  repeated Event events = 7;
+  string chat_id = 8;
+}
+
+message Event {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  Location location = 4;
+  string image_url = 5;
+  string start_date = 6;
+  string end_date = 7;
+  string chat_id = 8;
+  int32 participants = 9;
+}
+
+message SearchCriteria {
+  Location location = 1;
+  repeated string languages = 2;
+  repeated string hashtags = 3;
+}
+
+message Location {
+  string location_id = 1;
+  float latitude = 2;
+  float longitude = 3;
+}
+
+message ErrorResponse {
+  string entity_name = 1;
+  string existing_entity_id = 2;
+  string error_description = 3;
+}

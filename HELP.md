@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'org.groopy.room-service' is invalid and this project uses 'org.groopy.roomservice' instead.
+* The original package name 'org.groopy.wall-service' is invalid and this project uses 'org.groopy.wallservice' instead.
 
 # Getting Started
 

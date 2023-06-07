@@ -14,4 +14,4 @@ COPY . .
 RUN ./gradlew clean build
 
 
-ENTRYPOINT ["java","-jar","./build/libs/room-service-1.0.jar", "-spring.profiles.active=prod" ,"--spring.config.location=classpath:/docker.yaml"]
+ENTRYPOINT ["java","-jar","./build/libs/wall-service-1.0.jar", "-spring.profiles.active=prod" ,"--spring.config.location=classpath:/docker.yaml"]

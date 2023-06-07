@@ -18,13 +18,13 @@ jobs:
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: Build the Docker image
-        run: docker build --tag=room-service:latest --platform=linux/amd64 .
+        run: docker build --tag=wall-service:latest --platform=linux/amd64 .
 
       - name: Docker tag
-        run: docker tag room-service:latest aledanna/room-service
+        run: docker tag wall-service:latest aledanna/wall-service
 
       - name: Docker Push
-        run: docker push aledanna/room-service
+        run: docker push aledanna/wall-service
 
   deploy:
     needs: [build]
