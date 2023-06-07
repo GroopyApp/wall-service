@@ -34,7 +34,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             SearchCriteriaDto searchCriteriaDto = presentationMapper.map(request.getCriteria());
             responseObserver.onNext(WallServiceProto.GetWallResponse.newBuilder().addAllTopics(
                             applicationService.get(searchCriteriaDto.toBuilder()
-                                            .onlyValidEvents(true)
+                                            .onlyFutureEvents(true)
                                             .build()).stream()
                                     .map(presentationMapper::map)
                                     .toList())

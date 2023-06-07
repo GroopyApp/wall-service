@@ -53,7 +53,7 @@ public class CrudService {
                 wallEntity.getId(),
                 requestCriteria.getHashtags(),
                 requestCriteria.getLanguages(),
-                requestCriteria.isOnlyValidEvents()).stream().map(applicationMapper::map).toList())
+                requestCriteria.isOnlyFutureEvents()).stream().map(applicationMapper::map).toList())
                 .orElseThrow(() -> new WallNotFoundException(requestCriteria.getLocation().getLocationId()));
     }
 
