@@ -9,7 +9,7 @@ service WallService {
   rpc getTopic (GetTopicRequest) returns (GetTopicResponse) {};
   rpc createTopic (CreateTopicRequest) returns (CreateTopicResponse) {};
   rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
-  }
+}
 
 message GetWallRequest {
   SearchCriteria criteria = 1;

@@ -3,6 +3,7 @@ package app.groopy.wallservice.presentation;
 import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.application.ApplicationService;
 import app.groopy.wallservice.application.exception.ApplicationException;
+import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.presentation.mapper.PresentationMapper;
 import app.groopy.wallservice.presentation.resolver.ErrorResolver;
 import io.grpc.stub.StreamObserver;
@@ -30,8 +31,11 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
     public void getWall(WallServiceProto.GetWallRequest request, StreamObserver<WallServiceProto.GetWallResponse> responseObserver) {
         LOGGER.info("Processing GetWallRequest {}", request);
         try {
+            SearchCriteriaDto searchCriteriaDto = presentationMapper.map(request.getCriteria());
             responseObserver.onNext(WallServiceProto.GetWallResponse.newBuilder().addAllTopics(
-                            applicationService.get(presentationMapper.map(request.getCriteria())).stream()
+                            applicationService.get(searchCriteriaDto.toBuilder()
+                                            .onlyValidEvents(true)
+                                            .build()).stream()
                                     .map(presentationMapper::map)
                                     .toList())
                     .build());

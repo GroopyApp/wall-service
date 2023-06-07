@@ -2,6 +2,7 @@ package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
+import app.groopy.wallservice.domain.exceptions.EventInThePastException;
 import app.groopy.wallservice.domain.models.CreateEventRequestDto;
 import app.groopy.wallservice.infrastructure.models.Entity;
 import app.groopy.wallservice.infrastructure.models.EventEntity;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,9 +44,12 @@ public class Validator {
         }
     }
 
-    public void validate(CreateEventRequestDto createEventRequest) throws EndDateIsBeforeException {
+    public void validate(CreateEventRequestDto createEventRequest) throws EndDateIsBeforeException, EventInThePastException {
         if (createEventRequest.getEndDate().isBefore(createEventRequest.getStartDate())) {
-            throw new EndDateIsBeforeException(createEventRequest.getStartDate(), createEventRequest.getStartDate());
+            throw new EndDateIsBeforeException(createEventRequest.getStartDate(), createEventRequest.getEndDate());
+        }
+        if (createEventRequest.getStartDate().isBefore(LocalDateTime.now())) {
+            throw new EventInThePastException(createEventRequest.getStartDate());
         }
     }
 }

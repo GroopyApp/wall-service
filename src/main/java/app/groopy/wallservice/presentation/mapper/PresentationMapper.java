@@ -19,6 +19,7 @@ public interface PresentationMapper {
             @Mapping(target = "locationId", source = "location.locationId")})
     CreateEventRequestDto map(WallServiceProto.CreateEventRequest input);
 
+    @Mappings({@Mapping(target = "onlyValidEvents", ignore = true)})
     SearchCriteriaDto map(WallServiceProto.SearchCriteria input);
 
     LocationDto map(WallServiceProto.Location input);

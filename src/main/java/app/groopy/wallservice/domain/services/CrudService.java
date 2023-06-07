@@ -1,8 +1,6 @@
 package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
-import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
-import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
 import app.groopy.wallservice.domain.exceptions.WallNotFoundException;
 import app.groopy.wallservice.domain.exceptions.TopicNotFoundException;
 import app.groopy.wallservice.domain.models.CreateEventRequestDto;
@@ -15,6 +13,7 @@ import app.groopy.wallservice.infrastructure.models.TopicEntity;
 import app.groopy.wallservice.infrastructure.models.WallEntity;
 import app.groopy.wallservice.infrastructure.repository.TopicRepository;
 import app.groopy.wallservice.infrastructure.repository.WallRepository;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,17 +45,20 @@ public class CrudService {
         this.applicationMapper = applicationMapper;
     }
 
-    public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) throws WallNotFoundException {
+    @SneakyThrows
+    public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) {
         Optional<WallEntity> wall = wallRepository.findByLocationId(requestCriteria.getLocation().getLocationId());
         return wall.map(wallEntity -> topicRepository.findByCriteria(
                 mongoTemplate,
                 wallEntity.getId(),
                 requestCriteria.getHashtags(),
-                requestCriteria.getLanguages()).stream().map(applicationMapper::map).toList())
+                requestCriteria.getLanguages(),
+                requestCriteria.isOnlyValidEvents()).stream().map(applicationMapper::map).toList())
                 .orElseThrow(() -> new WallNotFoundException(requestCriteria.getLocation().getLocationId()));
     }
 
-    public TopicDto createTopic(CreateTopicRequestDto createTopicRequest) throws EntityAlreadyExistsException {
+    @SneakyThrows
+    public TopicDto createTopic(CreateTopicRequestDto createTopicRequest) {
         var identifier = UUIDUtils.generateUUID(createTopicRequest);
         validator.validate(identifier, TopicEntity.class);
         TopicEntity topic = topicRepository.save(TopicEntity.builder()
@@ -72,7 +74,8 @@ public class CrudService {
         return applicationMapper.map(topic);
     }
 
-    public TopicDto createEvent(CreateEventRequestDto createEventRequest) throws EntityAlreadyExistsException, TopicNotFoundException, EndDateIsBeforeException {
+    @SneakyThrows
+    public TopicDto createEvent(CreateEventRequestDto createEventRequest) {
         validator.validate(createEventRequest);
 
         TopicEntity topic = topicRepository.findById(createEventRequest.getTopicId())
