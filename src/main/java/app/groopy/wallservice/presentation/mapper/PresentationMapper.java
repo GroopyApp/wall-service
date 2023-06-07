@@ -38,7 +38,7 @@ public interface PresentationMapper {
     })
     WallServiceProto.Event map(EventDto input);
 
-    WallServiceProto.ErrorResponse map(ErrorDto input);
+    WallServiceProto.ErrorResponse map(ErrorMetadataDto input);
 
     default LocalDateTime toLocalDate(String input) {
         return LocalDateTime.parse(input);

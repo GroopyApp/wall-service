@@ -1,6 +1,4 @@
 syntax = "proto3";
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/any.proto";
 
 package wallservice;
 option java_package = "app.groopy.protobuf";

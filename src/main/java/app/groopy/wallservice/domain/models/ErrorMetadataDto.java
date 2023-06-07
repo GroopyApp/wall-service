@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ErrorDto {
+public class ErrorMetadataDto {
     String entityName;
     String existingEntityId;
     String errorDescription;
     String notFoundId;
+    String startDate;
+    String endDate;
 }

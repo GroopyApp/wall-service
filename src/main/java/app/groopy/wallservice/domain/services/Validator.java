@@ -1,6 +1,8 @@
 package app.groopy.wallservice.domain.services;
 
+import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
+import app.groopy.wallservice.domain.models.CreateEventRequestDto;
 import app.groopy.wallservice.infrastructure.models.Entity;
 import app.groopy.wallservice.infrastructure.models.EventEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,12 @@ public class Validator {
                 .findFirst();
         if (eventEntity.isPresent()) {
             throw new EntityAlreadyExistsException(EventEntity.class, eventEntity.get().getIdentifier());
+        }
+    }
+
+    public void validate(CreateEventRequestDto createEventRequest) throws EndDateIsBeforeException {
+        if (createEventRequest.getEndDate().isBefore(createEventRequest.getStartDate())) {
+            throw new EndDateIsBeforeException(createEventRequest.getStartDate(), createEventRequest.getStartDate());
         }
     }
 }

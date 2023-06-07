@@ -1,6 +1,7 @@
 package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
+import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
 import app.groopy.wallservice.domain.exceptions.WallNotFoundException;
 import app.groopy.wallservice.domain.exceptions.TopicNotFoundException;
@@ -66,7 +67,8 @@ public class CrudService {
         return applicationMapper.map(topic);
     }
 
-    public TopicDto createEvent(CreateEventRequestDto createEventRequest) throws EntityAlreadyExistsException, TopicNotFoundException {
+    public TopicDto createEvent(CreateEventRequestDto createEventRequest) throws EntityAlreadyExistsException, TopicNotFoundException, EndDateIsBeforeException {
+        validator.validate(createEventRequest);
         TopicEntity topic = topicRepository.findById(createEventRequest.getTopicId())
                 .orElseThrow(() -> new TopicNotFoundException(createEventRequest.getTopicId()));
         var identifier = UUIDUtils.generateUUID(createEventRequest);

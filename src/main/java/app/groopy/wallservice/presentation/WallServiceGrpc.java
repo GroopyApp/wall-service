@@ -37,7 +37,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
                     .build());
             responseObserver.onCompleted();
         } catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
+            responseObserver.onError(ErrorResolver.resolve(e));
         }
     }
 
@@ -53,7 +53,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
+            responseObserver.onError(ErrorResolver.resolve(e));
         }
     }
 
@@ -69,7 +69,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e.getErrorResponse()));
+            responseObserver.onError(ErrorResolver.resolve(e));
         }
     }
 }

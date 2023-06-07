@@ -1,13 +1,13 @@
 package app.groopy.wallservice.application.exception;
 
-import app.groopy.wallservice.domain.models.ErrorDto;
+import app.groopy.wallservice.domain.models.ErrorMetadataDto;
 import lombok.Getter;
 
 @Getter
 public class ApplicationException extends Exception {
-    private final ErrorDto errorResponse;
+    private final ErrorMetadataDto errorResponse;
 
-    public ApplicationException(ErrorDto errorResponse) {
+    public ApplicationException(ErrorMetadataDto errorResponse) {
         this.errorResponse = errorResponse;
     }
 }
