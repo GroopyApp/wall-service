@@ -90,7 +90,5 @@ message Location {
 }
 
 message ErrorResponse {
-  string entity_name = 1;
-  string existing_entity_id = 2;
-  string error_description = 3;
+  map<string, string> parameters = 1;
 }

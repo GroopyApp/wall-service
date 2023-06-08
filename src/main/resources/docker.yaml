@@ -1,10 +1,6 @@
 spring:
   application.name: wall-service
 
-elasticsearch:
-  host: elasticsearch
-  port: 9200
-
 grpc:
   server:
     port: 8070

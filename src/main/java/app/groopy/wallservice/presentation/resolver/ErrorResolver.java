@@ -1,5 +1,6 @@
 package app.groopy.wallservice.presentation.resolver;
 
+import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.application.exception.ApplicationAlreadyExistsException;
 import app.groopy.wallservice.application.exception.ApplicationBadRequestException;
 import app.groopy.wallservice.application.exception.ApplicationException;
@@ -10,7 +11,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Any;
 import com.google.rpc.Code;
 import com.google.rpc.ErrorInfo;
+import io.grpc.Metadata;
+import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.grpc.protobuf.ProtoUtils;
 import io.grpc.protobuf.StatusProto;
 
 import java.util.HashMap;
@@ -20,13 +24,17 @@ import java.util.stream.Collectors;
 public class ErrorResolver {
 
     public static StatusRuntimeException resolve(ApplicationException exception) {
+        var errorResponseKey = ProtoUtils.keyForProto(WallServiceProto.ErrorResponse.getDefaultInstance());
+        Metadata metadata = new Metadata();
+
+        var errorResponse = WallServiceProto.ErrorResponse.newBuilder()
+                .putAllParameters(resolveMetadata(exception.getErrorResponse())).build();
+        metadata.put(errorResponseKey, errorResponse);
+
             return StatusProto.toStatusRuntimeException(com.google.rpc.Status.newBuilder()
             .setCode(resolveCode(exception))
             .setMessage(exception.getErrorResponse().getErrorDescription())
-            .addDetails(Any.pack(ErrorInfo.newBuilder()
-                            .putAllMetadata(resolveMetadata(exception.getErrorResponse()))
-                    .build()))
-            .build());
+            .build(), metadata);
     }
 
     private static Map<String, String> resolveMetadata(ErrorMetadataDto errorMetadataDto) {
