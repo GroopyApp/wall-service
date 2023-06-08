@@ -62,6 +62,22 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
     }
 
     @Override
+    public void subscribeTopic(WallServiceProto.SubscribeTopicRequest request, StreamObserver<WallServiceProto.SubscribeTopicResponse> responseObserver) {
+        LOGGER.info("Processing SubscribeTopicRequest {}", request);
+        try {
+            responseObserver.onNext(WallServiceProto.SubscribeTopicResponse.newBuilder()
+                    .setTopic(presentationMapper.map(
+                            applicationService.subscribe(
+                                    presentationMapper.map(request))
+                    )).build());
+            responseObserver.onCompleted();
+        }
+        catch (ApplicationException e) {
+            responseObserver.onError(ErrorResolver.resolve(e));
+        }
+    }
+
+    @Override
     public void createEvent(WallServiceProto.CreateEventRequest request, StreamObserver<WallServiceProto.CreateEventResponse> responseObserver) {
         LOGGER.info("Processing CreateEventRequest {}", request);
         try {

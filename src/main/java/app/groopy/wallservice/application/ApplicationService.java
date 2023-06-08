@@ -1,9 +1,6 @@
 package app.groopy.wallservice.application;
 
-import app.groopy.wallservice.application.exception.ApplicationAlreadyExistsException;
-import app.groopy.wallservice.application.exception.ApplicationBadRequestException;
 import app.groopy.wallservice.application.exception.ApplicationException;
-import app.groopy.wallservice.application.exception.ApplicationNotFoundException;
 import app.groopy.wallservice.domain.exceptions.*;
 import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.services.CrudService;
@@ -41,6 +38,14 @@ public class ApplicationService {
     public TopicDto create(CreateEventRequestDto createEventRequest) throws ApplicationException {
         try {
             return crudService.createEvent(createEventRequest);
+        } catch (Exception e) {
+            throw ApplicationExceptionResolver.resolve(e);
+        }
+    }
+
+    public TopicDto subscribe(SubscribeTopicRequestDto subscribeTopicRequest) throws ApplicationException {
+        try {
+            return crudService.subscribeTopic(subscribeTopicRequest);
         } catch (Exception e) {
             throw ApplicationExceptionResolver.resolve(e);
         }

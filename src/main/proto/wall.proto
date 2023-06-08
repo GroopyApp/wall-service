@@ -9,6 +9,8 @@ service WallService {
   rpc getTopic (GetTopicRequest) returns (GetTopicResponse) {};
   rpc createTopic (CreateTopicRequest) returns (CreateTopicResponse) {};
   rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
+  rpc subscribeTopic (SubscribeTopicRequest) returns (SubscribeTopicResponse) {};
+  rpc subscribeEvent (SubscribeEventRequest) returns (SubscribeEventResponse) {};
 }
 
 message GetWallRequest {
@@ -40,6 +42,15 @@ message CreateTopicResponse {
     Topic topic = 1;
 }
 
+message SubscribeTopicRequest {
+  string topic_id = 1;
+  string user_id = 2;
+}
+
+message SubscribeTopicResponse {
+  Topic topic = 1;
+}
+
 message CreateEventRequest {
   string topic_id = 1;
   string name = 2;
@@ -54,6 +65,15 @@ message CreateEventResponse {
   Topic topic = 1;
 }
 
+message SubscribeEventRequest {
+  string event_id = 1;
+  string user_id = 2;
+}
+
+message SubscribeEventResponse {
+  Event event = 1;
+}
+
 message Topic {
   string id = 1;
   string name = 2;
@@ -63,6 +83,7 @@ message Topic {
   string language = 6;
   repeated Event events = 7;
   string chat_id = 8;
+  repeated User subscribers = 9;
 }
 
 message Event {
@@ -74,7 +95,20 @@ message Event {
   string start_date = 6;
   string end_date = 7;
   string chat_id = 8;
-  int32 participants = 9;
+  repeated User participants = 9;
+}
+
+message User {
+  string user_id = 1;
+  string name = 2;
+  string surname = 3;
+  string birth_date = 4;
+  string email = 5;
+  string phone = 6;
+  string gender = 7;
+  string language = 8;
+  repeated string subscribed_topics = 9;
+  repeated string subscribed_events = 10;
 }
 
 message SearchCriteria {

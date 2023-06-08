@@ -36,17 +36,24 @@ public class ApplicationExceptionResolver {
                     .errorDescription(e.getLocalizedMessage())
                     .startDate(ex.getStartDate().toString())
                     .build());
-        } else if(e instanceof WallNotFoundException) {
+        } else if (e instanceof WallNotFoundException) {
             var ex = (WallNotFoundException) e;
-            new ApplicationNotFoundException(ErrorMetadataDto.builder()
+            return new ApplicationNotFoundException(ErrorMetadataDto.builder()
                     .errorDescription(e.getLocalizedMessage())
                     .entityName(ex.getEntityName())
-                    .notFoundId(ex.getLocationId())
+                    .notFoundId(ex.getId())
+                    .build());
+        } else if (e instanceof UserNotFoundException) {
+            var ex = (UserNotFoundException) e;
+            return new ApplicationNotFoundException(ErrorMetadataDto.builder()
+                    .errorDescription(e.getLocalizedMessage())
+                    .entityName(ex.getEntityName())
+                    .notFoundId(ex.getId())
                     .build());
         }
 
         return new ApplicationException(ErrorMetadataDto.builder()
-                .errorDescription("unknown error")
+                .errorDescription("Unmapped exception")
                 .build());
     }
 }

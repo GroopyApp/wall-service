@@ -1,31 +1,29 @@
 package app.groopy.wallservice.infrastructure.models;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @SuperBuilder
 @NoArgsConstructor
-@Document("events")
-public class EventEntity extends Entity {
-
-    String name;
-    String description;
-    LocalDateTime startDate;
-    LocalDateTime endDate;
-    String eventLocationId;
-    String imageUrl;
-    String chatId;
-    String identifier;
+@Document("users")
+public class UserEntity extends Entity {
+    private String userId;
+    private String name;
+    private String surname;
+    private LocalDate birthDate;
+    private String email;
+    private String phone;
+    private String gender;
+    private String language;
     @DocumentReference(lazy = true)
-    TopicEntity topic;
+    private List<TopicEntity> subscribedTopics;
     @DocumentReference(lazy = true)
-    List<UserEntity> participants;
+    private List<EventEntity> subscribedEvents;
 }

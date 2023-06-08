@@ -16,4 +16,5 @@ public class TopicDto {
     private String language;
     private List<EventDto> events;
     private String chatId;
+    private List<UserLiteDto> subscribers;
 }

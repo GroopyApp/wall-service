@@ -1,10 +1,10 @@
 package app.groopy.wallservice.infrastructure.models;
 
-import app.groopy.wallservice.domain.models.EventDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
@@ -19,8 +19,13 @@ public class TopicEntity extends Entity {
     private String imageUrl;
     private List<String> categories;
     private String language;
+    private String chatId;
+    @DocumentReference
+    @Field("wallId")
+    private WallEntity wall;
+    @DocumentReference
     @Field("associatedEvents")
     private List<EventEntity> events;
-    private String chatId;
-    private String wallId;
+    @DocumentReference(lazy = true)
+    List<UserEntity> subscribers;
 }
