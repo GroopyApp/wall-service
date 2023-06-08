@@ -50,4 +50,12 @@ public class ApplicationService {
             throw ApplicationExceptionResolver.resolve(e);
         }
     }
+
+    public EventDto subscribe(SubscribeEventRequestDto subscribeEventRequest) throws ApplicationException {
+        try {
+            return crudService.subscribeEvent(subscribeEventRequest);
+        } catch (Exception e) {
+            throw ApplicationExceptionResolver.resolve(e);
+        }
+    }
 }

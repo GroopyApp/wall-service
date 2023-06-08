@@ -1,10 +1,7 @@
 package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
-import app.groopy.wallservice.domain.exceptions.UserAlreadySubscribedException;
-import app.groopy.wallservice.domain.exceptions.UserNotFoundException;
-import app.groopy.wallservice.domain.exceptions.WallNotFoundException;
-import app.groopy.wallservice.domain.exceptions.TopicNotFoundException;
+import app.groopy.wallservice.domain.exceptions.*;
 import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.utils.UUIDUtils;
 import app.groopy.wallservice.infrastructure.models.EventEntity;
@@ -136,5 +133,25 @@ public class CrudService {
 
         userRepository.save(user);
         return applicationMapper.map(topicRepository.save(topic));
+    }
+
+    @SneakyThrows
+    public EventDto subscribeEvent(SubscribeEventRequestDto subscribeEventRequest) {
+        EventEntity event = eventRepository.findById(subscribeEventRequest.getEventId())
+                .orElseThrow(() -> new EventNotFoundException(subscribeEventRequest.getEventId()));
+        UserEntity user = userRepository.findByUserId(subscribeEventRequest.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(subscribeEventRequest.getUserId()));
+        if (event.getParticipants().stream().anyMatch(userEntity -> userEntity.getId().equals(subscribeEventRequest.getUserId()))) {
+            throw new UserAlreadySubscribedException(
+                    subscribeEventRequest.getUserId(),
+                    subscribeEventRequest.getEventId(),
+                    UserAlreadySubscribedException.SubscriptionType.EVENT);
+        }
+
+        event.getParticipants().add(user);
+        user.getSubscribedEvents().add(event);
+
+        userRepository.save(user);
+        return applicationMapper.map(eventRepository.save(event));
     }
 }

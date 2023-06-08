@@ -21,6 +21,8 @@ public interface PresentationMapper {
 
     SubscribeTopicRequestDto map(WallServiceProto.SubscribeTopicRequest input);
 
+    SubscribeEventRequestDto map(WallServiceProto.SubscribeEventRequest input);
+
     @Mappings({@Mapping(target = "onlyFutureEvents", ignore = true)})
     SearchCriteriaDto map(WallServiceProto.SearchCriteria input);
 
