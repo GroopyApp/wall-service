@@ -20,7 +20,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -57,9 +56,14 @@ public class CrudService {
 
     @SneakyThrows
     public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) {
+        LOGGER.info("fetching topics by requestCriteria: {}", requestCriteria);
         WallEntity wall = wallRepository.findByLocationId(requestCriteria.getLocation().getLocationId())
-                .orElseThrow(() -> new WallNotFoundException(requestCriteria.getLocation().getLocationId(), WallNotFoundException.WallSearchType.LOCATION_ID));
-
+                .orElseThrow(() -> {
+                    LOGGER.error("No wall found for specific location: {}", requestCriteria.getLocation());
+                    return new WallNotFoundException(
+                            requestCriteria.getLocation().getLocationId(),
+                            WallNotFoundException.WallSearchType.LOCATION_ID);
+                });
         return topicRepository.findByCriteria(
                 mongoTemplate,
                 wall.getId(),
@@ -70,10 +74,15 @@ public class CrudService {
 
     @SneakyThrows
     public TopicDto createTopic(CreateTopicRequestDto createTopicRequest) {
+        LOGGER.info("creating new topic with request parameters: {}", createTopicRequest);
         var identifier = UUIDUtils.generateUUID(createTopicRequest);
+        LOGGER.info("new UUID generated for topic creation: {}", identifier);
         validator.validate(identifier, TopicEntity.class);
         WallEntity wall = wallRepository.findById(createTopicRequest.getWallId())
-                .orElseThrow(() -> new WallNotFoundException(createTopicRequest.getWallId(), WallNotFoundException.WallSearchType.ID));
+                .orElseThrow(() -> {
+                    LOGGER.error("No wall found for specific id: {}", createTopicRequest.getWallId());
+                    return new WallNotFoundException(createTopicRequest.getWallId(), WallNotFoundException.WallSearchType.ID);
+                });
         TopicEntity topic = topicRepository.save(TopicEntity.builder()
                 .wall(wall)
                 .name(createTopicRequest.getName())
@@ -91,12 +100,18 @@ public class CrudService {
 
     @SneakyThrows
     public TopicDto createEvent(CreateEventRequestDto createEventRequest) {
+        LOGGER.info("creating new topic with request parameters: {}", createEventRequest);
         validator.validate(createEventRequest);
 
         TopicEntity topic = topicRepository.findById(createEventRequest.getTopicId())
-                .orElseThrow(() -> new TopicNotFoundException(createEventRequest.getTopicId()));
+                .orElseThrow(() -> {
+                    LOGGER.error("No topic found with specific id: {}", createEventRequest.getTopicId());
+                    return new TopicNotFoundException(createEventRequest.getTopicId());
+                });
 
         var identifier = UUIDUtils.generateUUID(createEventRequest);
+        LOGGER.info("new UUID generated for event creation: {}", identifier);
+
         validator.validate(identifier, topic.getEvents());
         EventEntity event = eventRepository.save(EventEntity.builder()
                         .topic(topic)
@@ -117,11 +132,22 @@ public class CrudService {
 
     @SneakyThrows
     public TopicDto subscribeTopic(SubscribeTopicRequestDto subscribeTopicRequest) {
+        LOGGER.info("processing new topic subscription: {}", subscribeTopicRequest);
         TopicEntity topic = topicRepository.findById(subscribeTopicRequest.getTopicId())
-                .orElseThrow(() -> new TopicNotFoundException(subscribeTopicRequest.getTopicId()));
+                .orElseThrow(() -> {
+                    LOGGER.error("No topic found with specific id: {}", subscribeTopicRequest.getTopicId());
+                    return new TopicNotFoundException(subscribeTopicRequest.getTopicId());
+                });
         UserEntity user = userRepository.findByUserId(subscribeTopicRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(subscribeTopicRequest.getUserId()));
-        if (topic.getSubscribers().stream().anyMatch(userEntity -> userEntity.getId().equals(subscribeTopicRequest.getUserId()))) {
+                .orElseThrow(() -> {
+                    LOGGER.error("No user found with specific id: {}", subscribeTopicRequest.getUserId());
+                    return new UserNotFoundException(subscribeTopicRequest.getUserId());
+                });
+        if (topic.getSubscribers().stream().anyMatch(userEntity ->
+                userEntity.getId().equals(subscribeTopicRequest.getUserId()))) {
+            LOGGER.error("User with id {} is already subscribed to topic with id {}",
+                    subscribeTopicRequest.getUserId(),
+                    subscribeTopicRequest.getTopicId());
             throw new UserAlreadySubscribedException(
                     subscribeTopicRequest.getUserId(),
                     subscribeTopicRequest.getTopicId(),
@@ -137,11 +163,23 @@ public class CrudService {
 
     @SneakyThrows
     public EventDto subscribeEvent(SubscribeEventRequestDto subscribeEventRequest) {
+        LOGGER.info("processing new event subscription: {}", subscribeEventRequest);
         EventEntity event = eventRepository.findById(subscribeEventRequest.getEventId())
-                .orElseThrow(() -> new EventNotFoundException(subscribeEventRequest.getEventId()));
+                .orElseThrow(() -> {
+                    LOGGER.error("No event found with specific id: {}", subscribeEventRequest.getEventId());
+                    return new EventNotFoundException(subscribeEventRequest.getEventId());
+                });
         UserEntity user = userRepository.findByUserId(subscribeEventRequest.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(subscribeEventRequest.getUserId()));
-        if (event.getParticipants().stream().anyMatch(userEntity -> userEntity.getId().equals(subscribeEventRequest.getUserId()))) {
+                .orElseThrow(() -> {
+                    LOGGER.error("No user found with specific id: {}", subscribeEventRequest.getUserId());
+                    return new UserNotFoundException(subscribeEventRequest.getUserId());
+                });
+        if (event.getParticipants().stream().anyMatch(userEntity ->
+                userEntity.getId().equals(subscribeEventRequest.getUserId()))) {
+            LOGGER.error("User with id {} is already subscribed to event with id {}",
+                    subscribeEventRequest.getUserId(),
+                    subscribeEventRequest.getEventId());
+
             throw new UserAlreadySubscribedException(
                     subscribeEventRequest.getUserId(),
                     subscribeEventRequest.getEventId(),
