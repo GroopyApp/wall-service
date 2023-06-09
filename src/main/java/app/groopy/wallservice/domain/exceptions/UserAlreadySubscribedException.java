@@ -9,7 +9,7 @@ public class UserAlreadySubscribedException extends Exception {
     private final String userId;
 
     public UserAlreadySubscribedException(String userId, String targetId, SubscriptionType type) {
-        super(String.format("User with id %s is already subscribed to %s with id %s", userId, targetId, type.getType()));
+        super(String.format("User with id %s is already subscribed to %s with id %s", userId, type.getType(), targetId));
         this.targetId = targetId;
         this.userId = userId;
     }
