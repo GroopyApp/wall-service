@@ -1,7 +1,6 @@
 package app.groopy.wallservice.application;
 
 import app.groopy.wallservice.application.exceptions.ApplicationException;
-import app.groopy.wallservice.domain.exceptions.*;
 import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
@@ -9,6 +8,7 @@ import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
 import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
+import app.groopy.wallservice.domain.resolver.InfrastructureExceptionResolver;
 import app.groopy.wallservice.domain.services.CrudService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class ApplicationService {
             LOGGER.info("returning results for get topics request: {}", result);
             return result;
         } catch (Exception e) {
-            throw ApplicationExceptionResolver.resolve(e);
+            throw InfrastructureExceptionResolver.resolve(e);
         }
     }
 
@@ -45,7 +45,7 @@ public class ApplicationService {
             LOGGER.info("returning resulting topic after creation: {}", result);
             return result;
         } catch (Exception e) {
-            throw ApplicationExceptionResolver.resolve(e);
+            throw InfrastructureExceptionResolver.resolve(e);
         }
     }
 
@@ -55,7 +55,7 @@ public class ApplicationService {
             LOGGER.info("returning resulting event after creation: {}", result);
             return result;
         } catch (Exception e) {
-            throw ApplicationExceptionResolver.resolve(e);
+            throw InfrastructureExceptionResolver.resolve(e);
         }
     }
 
@@ -65,7 +65,7 @@ public class ApplicationService {
             LOGGER.info("returning resulting topic after subscription: {}", result);
             return result;
         } catch (Exception e) {
-            throw ApplicationExceptionResolver.resolve(e);
+            throw InfrastructureExceptionResolver.resolve(e);
         }
     }
 
@@ -75,7 +75,7 @@ public class ApplicationService {
             LOGGER.info("returning resulting event after subscription: {}", result);
             return result;
         } catch (Exception e) {
-            throw ApplicationExceptionResolver.resolve(e);
+            throw InfrastructureExceptionResolver.resolve(e);
         }
     }
 }

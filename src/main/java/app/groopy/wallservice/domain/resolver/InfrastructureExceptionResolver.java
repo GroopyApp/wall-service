@@ -1,12 +1,13 @@
-package app.groopy.wallservice.domain.exceptions;
+package app.groopy.wallservice.domain.resolver;
 
 import app.groopy.wallservice.application.exceptions.ApplicationAlreadyExistsException;
 import app.groopy.wallservice.application.exceptions.ApplicationBadRequestException;
 import app.groopy.wallservice.application.exceptions.ApplicationException;
 import app.groopy.wallservice.application.exceptions.ApplicationNotFoundException;
+import app.groopy.wallservice.domain.exceptions.*;
 import app.groopy.wallservice.domain.models.ErrorMetadataDto;
 
-public class ApplicationExceptionResolver {
+public class InfrastructureExceptionResolver {
 
     public static ApplicationException resolve(Exception e) {
         if (e instanceof EntityAlreadyExistsException) {

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ErrorResolver {
+public class ApplicationExceptionResolver {
 
     public static StatusRuntimeException resolve(ApplicationException exception) {
         var errorResponseKey = ProtoUtils.keyForProto(WallServiceProto.ErrorResponse.getDefaultInstance());

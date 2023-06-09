@@ -5,7 +5,7 @@ import app.groopy.wallservice.application.ApplicationService;
 import app.groopy.wallservice.application.exceptions.ApplicationException;
 import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.presentation.mapper.PresentationMapper;
-import app.groopy.wallservice.presentation.resolver.ErrorResolver;
+import app.groopy.wallservice.presentation.resolver.ApplicationExceptionResolver;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +41,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
                     .build());
             responseObserver.onCompleted();
         } catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e));
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
 
@@ -57,7 +57,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e));
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
 
@@ -73,7 +73,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e));
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
 
@@ -89,7 +89,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e));
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
 
@@ -105,7 +105,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onCompleted();
         }
         catch (ApplicationException e) {
-            responseObserver.onError(ErrorResolver.resolve(e));
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
 }
