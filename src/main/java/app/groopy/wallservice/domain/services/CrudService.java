@@ -175,7 +175,7 @@ public class CrudService {
                     return new UserNotFoundException(subscribeEventRequest.getUserId());
                 });
         if (event.getParticipants().stream().anyMatch(userEntity ->
-                userEntity.getId().equals(subscribeEventRequest.getUserId()))) {
+                userEntity.getUserId().equals(subscribeEventRequest.getUserId()))) {
             LOGGER.error("User with id {} is already subscribed to event with id {}",
                     subscribeEventRequest.getUserId(),
                     subscribeEventRequest.getEventId());
