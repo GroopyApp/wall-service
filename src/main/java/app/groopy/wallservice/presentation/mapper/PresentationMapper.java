@@ -2,6 +2,12 @@ package app.groopy.wallservice.presentation.mapper;
 
 import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.domain.models.*;
+import app.groopy.wallservice.domain.models.entities.EventDto;
+import app.groopy.wallservice.domain.models.entities.TopicDto;
+import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
+import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
+import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
+import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
 import org.mapstruct.*;
 
 import java.time.LocalDateTime;

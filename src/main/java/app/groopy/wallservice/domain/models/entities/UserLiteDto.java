@@ -1,12 +1,11 @@
-package app.groopy.wallservice.domain.models;
+package app.groopy.wallservice.domain.models.entities;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder
-public class UserLiteDto {
+public class UserLiteDto extends BasicEntityDto {
     private String userId;
     private String name;
     private String surname;

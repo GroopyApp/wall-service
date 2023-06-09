@@ -1,14 +1,13 @@
-package app.groopy.wallservice.domain.models;
+package app.groopy.wallservice.domain.models.entities;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Data
-@Builder
-public class TopicDto {
-    private String id;
+@SuperBuilder
+public class TopicDto extends BasicEntityDto {
     private String name;
     private String description;
     private String imageUrl;

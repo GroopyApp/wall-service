@@ -1,4 +1,4 @@
-package app.groopy.wallservice.domain.models;
+package app.groopy.wallservice.domain.models.requests;
 
 import lombok.Builder;
 import lombok.Data;

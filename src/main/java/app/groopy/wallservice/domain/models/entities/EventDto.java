@@ -1,14 +1,14 @@
-package app.groopy.wallservice.domain.models;
+package app.groopy.wallservice.domain.models.entities;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Builder
-public class EventDto {
+@SuperBuilder
+public class EventDto extends BasicEntityDto {
     String name;
     String description;
     LocalDateTime startDate;

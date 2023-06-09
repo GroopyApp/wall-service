@@ -1,8 +1,5 @@
-package app.groopy.wallservice.domain.models;
+package app.groopy.wallservice.domain.models.entities;
 
-import app.groopy.wallservice.infrastructure.models.EventEntity;
-import app.groopy.wallservice.infrastructure.models.TopicEntity;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 

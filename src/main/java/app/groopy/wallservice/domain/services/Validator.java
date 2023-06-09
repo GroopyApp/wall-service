@@ -3,7 +3,7 @@ package app.groopy.wallservice.domain.services;
 import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
 import app.groopy.wallservice.domain.exceptions.EventInThePastException;
-import app.groopy.wallservice.domain.models.CreateEventRequestDto;
+import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
 import app.groopy.wallservice.infrastructure.models.Entity;
 import app.groopy.wallservice.infrastructure.models.EventEntity;
 import org.springframework.beans.factory.annotation.Autowired;

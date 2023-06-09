@@ -1,7 +1,7 @@
 package app.groopy.wallservice.domain.utils;
 
-import app.groopy.wallservice.domain.models.CreateEventRequestDto;
-import app.groopy.wallservice.domain.models.CreateTopicRequestDto;
+import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
+import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
 
 import java.util.UUID;
 
