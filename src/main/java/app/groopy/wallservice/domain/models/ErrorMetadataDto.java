@@ -12,4 +12,6 @@ public class ErrorMetadataDto {
     String notFoundId;
     String startDate;
     String endDate;
+    String userId;
+    String targetId;
 }

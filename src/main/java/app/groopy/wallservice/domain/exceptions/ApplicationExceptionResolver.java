@@ -1,9 +1,9 @@
 package app.groopy.wallservice.domain.exceptions;
 
-import app.groopy.wallservice.application.exception.ApplicationAlreadyExistsException;
-import app.groopy.wallservice.application.exception.ApplicationBadRequestException;
-import app.groopy.wallservice.application.exception.ApplicationException;
-import app.groopy.wallservice.application.exception.ApplicationNotFoundException;
+import app.groopy.wallservice.application.exceptions.ApplicationAlreadyExistsException;
+import app.groopy.wallservice.application.exceptions.ApplicationBadRequestException;
+import app.groopy.wallservice.application.exceptions.ApplicationException;
+import app.groopy.wallservice.application.exceptions.ApplicationNotFoundException;
 import app.groopy.wallservice.domain.models.ErrorMetadataDto;
 
 public class ApplicationExceptionResolver {
@@ -49,6 +49,13 @@ public class ApplicationExceptionResolver {
                     .errorDescription(e.getLocalizedMessage())
                     .entityName(ex.getEntityName())
                     .notFoundId(ex.getId())
+                    .build());
+        } else if (e instanceof UserAlreadySubscribedException) {
+            var ex = (UserAlreadySubscribedException) e;
+            return new ApplicationNotFoundException(ErrorMetadataDto.builder()
+                    .errorDescription(e.getLocalizedMessage())
+                    .userId(ex.getUserId())
+                    .targetId(ex.getTargetId())
                     .build());
         }
 

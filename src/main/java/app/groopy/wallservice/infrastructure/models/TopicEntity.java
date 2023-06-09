@@ -20,8 +20,8 @@ public class TopicEntity extends Entity {
     private List<String> categories;
     private String language;
     private String chatId;
-    @DocumentReference
-    @Field("wallId")
+    @DocumentReference(lazy = true)
+    @Field("wall")
     private WallEntity wall;
     @DocumentReference
     @Field("associatedEvents")

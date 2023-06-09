@@ -1,18 +1,15 @@
 package app.groopy.wallservice.presentation.resolver;
 
 import app.groopy.protobuf.WallServiceProto;
-import app.groopy.wallservice.application.exception.ApplicationAlreadyExistsException;
-import app.groopy.wallservice.application.exception.ApplicationBadRequestException;
-import app.groopy.wallservice.application.exception.ApplicationException;
-import app.groopy.wallservice.application.exception.ApplicationNotFoundException;
+import app.groopy.wallservice.application.exceptions.ApplicationAlreadyExistsException;
+import app.groopy.wallservice.application.exceptions.ApplicationBadRequestException;
+import app.groopy.wallservice.application.exceptions.ApplicationException;
+import app.groopy.wallservice.application.exceptions.ApplicationNotFoundException;
 import app.groopy.wallservice.domain.models.ErrorMetadataDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.Any;
 import com.google.rpc.Code;
-import com.google.rpc.ErrorInfo;
 import io.grpc.Metadata;
-import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.protobuf.ProtoUtils;
 import io.grpc.protobuf.StatusProto;

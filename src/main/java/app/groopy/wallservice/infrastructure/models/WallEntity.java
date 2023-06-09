@@ -15,6 +15,6 @@ import java.util.List;
 public class WallEntity extends Entity {
 
     private String locationId;
-    @DocumentReference
+    @DocumentReference(lazy = true)
     List<TopicEntity> topics;
 }

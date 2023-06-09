@@ -1,6 +1,6 @@
 package app.groopy.wallservice.application;
 
-import app.groopy.wallservice.application.exception.ApplicationException;
+import app.groopy.wallservice.application.exceptions.ApplicationException;
 import app.groopy.wallservice.domain.exceptions.*;
 import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.services.CrudService;

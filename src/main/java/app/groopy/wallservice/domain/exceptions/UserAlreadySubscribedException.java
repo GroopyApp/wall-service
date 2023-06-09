@@ -1,17 +1,17 @@
 package app.groopy.wallservice.domain.exceptions;
 
-import app.groopy.wallservice.infrastructure.models.WallEntity;
 import lombok.Getter;
 
 @Getter
 public class UserAlreadySubscribedException extends Exception {
 
-    private final String id;
-    private final String entityName = WallEntity.class.getSimpleName();
+    private final String targetId;
+    private final String userId;
 
-    public UserAlreadySubscribedException(String userId, String id, SubscriptionType type) {
-        super(String.format("User with id %s is already subscribed to %s with id %s", userId, id, type.getType()));
-        this.id = id;
+    public UserAlreadySubscribedException(String userId, String targetId, SubscriptionType type) {
+        super(String.format("User with id %s is already subscribed to %s with id %s", userId, targetId, type.getType()));
+        this.targetId = targetId;
+        this.userId = userId;
     }
 
     public enum SubscriptionType {

@@ -2,7 +2,7 @@ package app.groopy.wallservice.presentation;
 
 import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.application.ApplicationService;
-import app.groopy.wallservice.application.exception.ApplicationException;
+import app.groopy.wallservice.application.exceptions.ApplicationException;
 import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.presentation.mapper.PresentationMapper;
 import app.groopy.wallservice.presentation.resolver.ErrorResolver;

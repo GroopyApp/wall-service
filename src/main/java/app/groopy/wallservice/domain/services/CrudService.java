@@ -144,7 +144,7 @@ public class CrudService {
                     return new UserNotFoundException(subscribeTopicRequest.getUserId());
                 });
         if (topic.getSubscribers().stream().anyMatch(userEntity ->
-                userEntity.getId().equals(subscribeTopicRequest.getUserId()))) {
+                userEntity.getUserId().equals(subscribeTopicRequest.getUserId()))) {
             LOGGER.error("User with id {} is already subscribed to topic with id {}",
                     subscribeTopicRequest.getUserId(),
                     subscribeTopicRequest.getTopicId());
