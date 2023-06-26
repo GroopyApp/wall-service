@@ -8,12 +8,12 @@ import java.util.List;
 @Data
 @SuperBuilder
 public class TopicDto extends BasicEntityDto {
-    private String name;
-    private String description;
-    private String imageUrl;
-    private List<String> categories;
-    private String language;
-    private List<EventDto> events;
-    private String chatId;
-    private List<UserLiteDto> subscribers;
+    String name;
+    String description;
+    String imageUrl;
+    List<String> categories;
+    String language;
+    List<EventDto> events;
+    ChatInfoDto chatInfo;
+    List<UserLiteDto> subscribers;
 }

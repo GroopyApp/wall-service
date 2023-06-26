@@ -9,3 +9,6 @@ grpc:
     port: 8070
     security:
       enabled: false
+
+pubnub:
+  host: https://ps.pndsn.com/ps.pndsn.com/

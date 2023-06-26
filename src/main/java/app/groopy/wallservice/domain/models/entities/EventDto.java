@@ -15,7 +15,7 @@ public class EventDto extends BasicEntityDto {
     LocalDateTime endDate;
     String eventLocationId;
     String imageUrl;
-    String chatId;
+    ChatInfoDto chatInfo;
     String identifier;
     List<UserLiteDto> participants;
 }

@@ -1,6 +1,5 @@
 package app.groopy.wallservice.infrastructure.models;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -22,7 +21,7 @@ public class EventEntity extends Entity {
     LocalDateTime endDate;
     String eventLocationId;
     String imageUrl;
-    String chatId;
+    ChatInfo chatInfo;
     String identifier;
     @DocumentReference(lazy = true)
     TopicEntity topic;

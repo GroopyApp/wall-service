@@ -9,7 +9,7 @@ import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
 import app.groopy.wallservice.domain.resolver.InfrastructureExceptionResolver;
-import app.groopy.wallservice.domain.services.CrudService;
+import app.groopy.wallservice.domain.services.DomainService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +22,16 @@ public class ApplicationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
 
-    private final CrudService crudService;
+    private final DomainService domainService;
 
     @Autowired
-    public ApplicationService(CrudService crudService) {
-        this.crudService = crudService;
+    public ApplicationService(DomainService domainService) {
+        this.domainService = domainService;
     }
 
     public List<TopicDto> get(SearchCriteriaDto criteria) throws ApplicationException {
         try {
-            var result = crudService.getTopicsBy(criteria);
+            var result = domainService.getTopicsBy(criteria);
             LOGGER.info("returning results for get topics request: {}", result);
             return result;
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class ApplicationService {
 
     public TopicDto create(CreateTopicRequestDto createTopicRequest) throws ApplicationException {
         try {
-            var result = crudService.createTopic(createTopicRequest);
+            var result = domainService.createTopic(createTopicRequest);
             LOGGER.info("returning resulting topic after creation: {}", result);
             return result;
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class ApplicationService {
 
     public TopicDto create(CreateEventRequestDto createEventRequest) throws ApplicationException {
         try {
-            var result = crudService.createEvent(createEventRequest);
+            var result = domainService.createEvent(createEventRequest);
             LOGGER.info("returning resulting event after creation: {}", result);
             return result;
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class ApplicationService {
 
     public TopicDto subscribe(SubscribeTopicRequestDto subscribeTopicRequest) throws ApplicationException {
         try {
-            var result = crudService.subscribeTopic(subscribeTopicRequest);
+            var result = domainService.subscribeTopic(subscribeTopicRequest);
             LOGGER.info("returning resulting topic after subscription: {}", result);
             return result;
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class ApplicationService {
 
     public EventDto subscribe(SubscribeEventRequestDto subscribeEventRequest) throws ApplicationException {
         try {
-            var result = crudService.subscribeEvent(subscribeEventRequest);
+            var result = domainService.subscribeEvent(subscribeEventRequest);
             LOGGER.info("returning resulting event after subscription: {}", result);
             return result;
         } catch (Exception e) {

@@ -2,22 +2,16 @@ package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
 import app.groopy.wallservice.domain.exceptions.*;
-import app.groopy.wallservice.domain.models.*;
+import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
 import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
 import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
 import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
-import app.groopy.wallservice.domain.utils.UUIDUtils;
-import app.groopy.wallservice.infrastructure.models.EventEntity;
-import app.groopy.wallservice.infrastructure.models.TopicEntity;
-import app.groopy.wallservice.infrastructure.models.UserEntity;
-import app.groopy.wallservice.infrastructure.models.WallEntity;
-import app.groopy.wallservice.infrastructure.repository.EventRepository;
-import app.groopy.wallservice.infrastructure.repository.TopicRepository;
-import app.groopy.wallservice.infrastructure.repository.UserRepository;
-import app.groopy.wallservice.infrastructure.repository.WallRepository;
+import app.groopy.wallservice.domain.utils.Utils;
+import app.groopy.wallservice.infrastructure.models.*;
+import app.groopy.wallservice.infrastructure.repository.*;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,26 +22,31 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class CrudService {
+import static app.groopy.wallservice.domain.utils.Utils.generateChatGroupName;
+import static app.groopy.wallservice.domain.utils.Utils.generateChatName;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CrudService.class);
+@Component
+public class DomainService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DomainService.class);
 
     private final TopicRepository topicRepository;
     private final EventRepository eventRepository;
     private final WallRepository wallRepository;
     private final UserRepository userRepository;
+    private final ChatProviderRepository chatProviderRepository;
     private final MongoTemplate mongoTemplate;
 
     private final Validator validator;
     private final ApplicationMapper applicationMapper;
 
     @Autowired
-    public CrudService(
+    public DomainService(
             TopicRepository topicRepository,
             EventRepository eventRepository,
             WallRepository wallRepository,
             UserRepository userRepository,
+            ChatProviderRepository chatProviderRepository,
             MongoTemplate mongoTemplate,
             Validator validator,
             ApplicationMapper applicationMapper) {
@@ -55,6 +54,7 @@ public class CrudService {
         this.eventRepository = eventRepository;
         this.wallRepository = wallRepository;
         this.userRepository = userRepository;
+        this.chatProviderRepository = chatProviderRepository;
         this.mongoTemplate = mongoTemplate;
         this.validator = validator;
         this.applicationMapper = applicationMapper;
@@ -81,7 +81,7 @@ public class CrudService {
     @SneakyThrows
     public TopicDto createTopic(CreateTopicRequestDto createTopicRequest) {
         LOGGER.info("creating new topic with request parameters: {}", createTopicRequest);
-        var identifier = UUIDUtils.generateUUID(createTopicRequest);
+        var identifier = Utils.generateUUID(createTopicRequest);
         LOGGER.info("new UUID generated for topic creation: {}", identifier);
         validator.validate(identifier, TopicEntity.class);
         WallEntity wall = wallRepository.findById(createTopicRequest.getWallId())
@@ -89,6 +89,13 @@ public class CrudService {
                     LOGGER.error("No wall found for specific id: {}", createTopicRequest.getWallId());
                     return new WallNotFoundException(createTopicRequest.getWallId(), WallNotFoundException.WallSearchType.ID);
                 });
+
+        CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
+                        .channelName(generateChatName(createTopicRequest.getName()))
+                        .groupName("topic-main")
+                        .uuid(identifier)
+                .build());
+
         TopicEntity topic = topicRepository.save(TopicEntity.builder()
                 .wall(wall)
                 .name(createTopicRequest.getName())
@@ -97,7 +104,11 @@ public class CrudService {
                 .categories(createTopicRequest.getCategories())
                 .language(createTopicRequest.getLanguage())
                 .events(new ArrayList<>())
-                .chatId(identifier)
+                .chatInfo(ChatInfo.builder()
+                        .chatName(chatResponse.getChannelName())
+                        .groupName(chatResponse.getGroupName())
+                        .uuid(identifier)
+                        .build())
                 .build());
         wall.getTopics().add(topic);
         wallRepository.save(wall);
@@ -115,14 +126,25 @@ public class CrudService {
                     return new TopicNotFoundException(createEventRequest.getTopicId());
                 });
 
-        var identifier = UUIDUtils.generateUUID(createEventRequest);
+        var identifier = Utils.generateUUID(createEventRequest);
         LOGGER.info("new UUID generated for event creation: {}", identifier);
 
         validator.validate(identifier, topic.getEvents());
+
+        CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
+                .channelName(topic.getChatInfo().getChatName())
+                .groupName(generateChatGroupName(createEventRequest.getName()))
+                .uuid(identifier)
+                .build());
+
         EventEntity event = eventRepository.save(EventEntity.builder()
                         .topic(topic)
                         .identifier(identifier)
-                        .chatId(identifier)
+                        .chatInfo(ChatInfo.builder()
+                            .chatName(chatResponse.getChannelName())
+                            .groupName(chatResponse.getGroupName())
+                            .uuid(identifier)
+                            .build())
                         .eventLocationId(createEventRequest.getLocationId())
                         .imageUrl(createEventRequest.getImageUrl())
                         .description(createEventRequest.getDescription())

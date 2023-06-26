@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate
 import spock.lang.Specification
 import spock.lang.Subject
 
-class CrudServiceTest extends Specification {
+class DomainServiceTest extends Specification {
 
     @SpringBean
     private final TopicRepository topicRepository = Mock TopicRepository
@@ -29,6 +29,6 @@ class CrudServiceTest extends Specification {
     private final ApplicationMapper applicationMapper = new ApplicationMapperImpl()
 
     @Subject
-    def testSubject = new CrudService(topicRepository, eventRepository, wallRepository, userRepository, mongoTemplate, validator, applicationMapper)
+    def testSubject = new DomainService(topicRepository, eventRepository, wallRepository, userRepository, mongoTemplate, validator, applicationMapper)
 
 }

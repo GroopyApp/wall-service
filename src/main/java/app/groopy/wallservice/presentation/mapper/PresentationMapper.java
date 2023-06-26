@@ -2,6 +2,7 @@ package app.groopy.wallservice.presentation.mapper;
 
 import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.domain.models.*;
+import app.groopy.wallservice.domain.models.entities.ChatInfoDto;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
 import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
@@ -43,6 +44,8 @@ public interface PresentationMapper {
 
     // DTO to PROTO
     WallServiceProto.Topic map(TopicDto input);
+
+    WallServiceProto.ChatInfo map(ChatInfoDto input);
 
     @Mappings({
             @Mapping(target = "location.locationId", source = "eventLocationId")

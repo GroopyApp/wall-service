@@ -1,13 +1,7 @@
 package app.groopy.wallservice.application.mapper;
 
-import app.groopy.wallservice.domain.models.entities.EventDto;
-import app.groopy.wallservice.domain.models.entities.TopicDto;
-import app.groopy.wallservice.domain.models.entities.UserDto;
-import app.groopy.wallservice.domain.models.entities.UserLiteDto;
-import app.groopy.wallservice.infrastructure.models.Entity;
-import app.groopy.wallservice.infrastructure.models.EventEntity;
-import app.groopy.wallservice.infrastructure.models.TopicEntity;
-import app.groopy.wallservice.infrastructure.models.UserEntity;
+import app.groopy.wallservice.domain.models.entities.*;
+import app.groopy.wallservice.infrastructure.models.*;
 import org.mapstruct.*;
 
 
@@ -21,6 +15,10 @@ public interface ApplicationMapper {
     @Mappings({
             @Mapping(target = "participants", source = "participants", qualifiedByName = "liteUser")})
     EventDto map(EventEntity input);
+
+    @Mappings({
+            @Mapping(target = "channelName", source = "chatName")})
+    ChatInfoDto map(ChatInfo input);
 
     @Mappings({
             @Mapping(target = "subscribedTopics", source = "subscribedTopics", qualifiedByName = "mapId"),

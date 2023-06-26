@@ -14,18 +14,18 @@ import java.util.List;
 @NoArgsConstructor
 @Document("topic")
 public class TopicEntity extends Entity {
-    private String name;
-    private String description;
-    private String imageUrl;
-    private List<String> categories;
-    private String language;
-    private String chatId;
+    String name;
+    String description;
+    String imageUrl;
+    List<String> categories;
+    String language;
+    ChatInfo chatInfo;
     @DocumentReference(lazy = true)
     @Field("wall")
-    private WallEntity wall;
+    WallEntity wall;
     @DocumentReference
     @Field("associatedEvents")
-    private List<EventEntity> events;
+    List<EventEntity> events;
     @DocumentReference(lazy = true)
     List<UserEntity> subscribers;
 }
