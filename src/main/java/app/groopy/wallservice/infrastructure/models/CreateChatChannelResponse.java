@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateChatChannelResponse {
-
     String channelName;
     String groupName;
 }

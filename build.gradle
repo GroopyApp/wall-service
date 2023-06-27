@@ -52,6 +52,7 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter', version: "${springBootVersion}"
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: "${springBootVersion}"
 	implementation group: 'net.devh', name: 'grpc-server-spring-boot-starter', version: "${grpcSpringBootStarterVersion}"
+	implementation group: 'net.devh', name: 'grpc-client-spring-boot-starter', version: "${grpcSpringBootStarterVersion}"
 
 	implementation group: 'javax.annotation', name:'javax.annotation-api', version: "${javaxAnnotationVersion}"
 
@@ -61,13 +62,12 @@ dependencies {
 	implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonDatabindVersion}"
 	implementation group: 'commons-validator', name: 'commons-validator', version: "${commonsValidatorVersion}"
 	implementation group: 'org.apache.groovy', name: 'groovy', version: "${groovyVersion}"
-	implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: "${retrofit2Version}"
 
 	implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: "${googleProtobufVersion}"
 	implementation group: 'com.google.protobuf', name: 'protobuf-java', version: "${googleProtobufVersion}"
 	implementation group: 'com.googlecode.protobuf-java-format', name: 'protobuf-java-format', version: "${googleProtobufJavaFormatVersion}"
 
-	implementation group: 'io.grpc', name: 'grpc-netty', version: "${grpcVersion}"
+	implementation group: 'io.grpc', name: 'grpc-netty-shaded', version: "${grpcVersion}"
 	implementation group: 'io.grpc', name: 'grpc-protobuf', version: "${grpcVersion}"
 	implementation group: 'io.grpc', name: 'grpc-stub', version: "${grpcVersion}"
 	implementation group: 'io.grpc', name: 'protoc-gen-grpc-java', version: "${grpcVersion}", ext: 'pom'

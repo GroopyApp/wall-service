@@ -22,9 +22,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.groopy.wallservice.domain.utils.Utils.generateChatGroupName;
-import static app.groopy.wallservice.domain.utils.Utils.generateChatName;
-
 @Component
 public class DomainService {
 
@@ -91,8 +88,7 @@ public class DomainService {
                 });
 
         CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
-                        .channelName(generateChatName(createTopicRequest.getName()))
-                        .groupName("topic-main")
+                        .name(createTopicRequest.getName())
                         .uuid(identifier)
                 .build());
 
@@ -132,8 +128,8 @@ public class DomainService {
         validator.validate(identifier, topic.getEvents());
 
         CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
-                .channelName(topic.getChatInfo().getChatName())
-                .groupName(generateChatGroupName(createEventRequest.getName()))
+                .name(topic.getName())
+                .group(createEventRequest.getName())
                 .uuid(identifier)
                 .build());
 

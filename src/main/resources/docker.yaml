@@ -9,6 +9,10 @@ grpc:
     port: 8070
     security:
       enabled: false
+  client:
+    chatService:
+      address: "static://chatservice:8072"
+      negotiationType: PLAINTEXT
 
 pubnub:
   host: https://ps.pndsn.com/ps.pndsn.com/
