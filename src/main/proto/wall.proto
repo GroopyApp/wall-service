@@ -6,7 +6,6 @@ option java_outer_classname = "WallServiceProto";
 
 service WallService {
   rpc getWall (WallRequest) returns (WallResponse) {};
-  rpc findWall (WallRequest) returns (WallResponse) {};
   rpc getTopic (GetTopicRequest) returns (GetTopicResponse) {};
   rpc createTopic (CreateTopicRequest) returns (CreateTopicResponse) {};
   rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
