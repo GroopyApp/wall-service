@@ -11,5 +11,6 @@ public class SearchCriteriaDto {
     LocationDto location;
     List<String> languages;
     List<String> hashtags;
+    String userId;
     boolean onlyFutureEvents;
 }

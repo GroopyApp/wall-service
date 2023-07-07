@@ -19,7 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -60,6 +62,7 @@ public class DomainService {
     @SneakyThrows
     public List<TopicDto> getTopicsBy(SearchCriteriaDto requestCriteria) {
         LOGGER.info("fetching topics by requestCriteria: {}", requestCriteria);
+        validator.validateSearch(requestCriteria);
         WallEntity wall = wallRepository.findByLocationId(requestCriteria.getLocation().getLocationId())
                 .orElseThrow(() -> {
                     LOGGER.error("No wall found for specific location: {}", requestCriteria.getLocation());
@@ -73,6 +76,37 @@ public class DomainService {
                 requestCriteria.getHashtags(),
                 requestCriteria.getLanguages(),
                 requestCriteria.isOnlyFutureEvents()).stream().map(applicationMapper::map).toList();
+    }
+
+    @SneakyThrows
+    public List<TopicDto> getUserTopics(SearchCriteriaDto requestCriteria) {
+        LOGGER.info("fetching user topics by requestCriteria: {}", requestCriteria);
+        validator.validateUserSearch(requestCriteria);
+        //fetch user
+        UserEntity user = userRepository.findByUserId(requestCriteria.getUserId())
+                .orElseThrow(() -> {
+                    LOGGER.error("No user found for specific id: {}", requestCriteria.getUserId());
+                    return new UserNotFoundException(requestCriteria.getUserId());
+                });
+        //fetch wall by location (a user can only see topics from a specific wall defined by his actual location) should we remove this restriction?
+        WallEntity wall = wallRepository.findByLocationId(requestCriteria.getLocation().getLocationId())
+                .orElseThrow(() -> {
+                    LOGGER.error("No wall found for specific location: {}", requestCriteria.getLocation());
+                    return new WallNotFoundException(
+                            requestCriteria.getLocation().getLocationId(),
+                            WallNotFoundException.WallSearchType.LOCATION_ID);
+                });
+        // get all topics subscribed by user, filter by wall and search criteria and including only future events
+        List<TopicEntity> userTopics = user.getSubscribedTopics().stream().filter(topic ->
+                topic.getWall().getId().equals(wall.getId()) && filterBySearchCriteria(topic, requestCriteria))
+                .peek(topic -> topic.setEvents(topic.getEvents().stream()
+                    .filter(eventEntity -> eventEntity.getStartDate().isAfter(LocalDateTime.now()))
+                    .toList()))
+                .toList();
+
+        return userTopics.stream()
+                .map(applicationMapper::map)
+                .toList();
     }
 
     @SneakyThrows
@@ -215,5 +249,13 @@ public class DomainService {
 
         userRepository.save(user);
         return applicationMapper.map(eventRepository.save(event));
+    }
+
+    private boolean filterBySearchCriteria(TopicEntity topic, SearchCriteriaDto requestCriteria) {
+        return requestCriteria.getHashtags() != null && !requestCriteria.getHashtags().isEmpty() ?
+                new HashSet<>(topic.getCategories()).containsAll(requestCriteria.getHashtags())
+                : requestCriteria.getLanguages() == null
+                || requestCriteria.getLanguages().isEmpty()
+                || requestCriteria.getLanguages().contains(topic.getLanguage());
     }
 }

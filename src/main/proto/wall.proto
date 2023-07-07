@@ -5,7 +5,8 @@ option java_package = "app.groopy.protobuf";
 option java_outer_classname = "WallServiceProto";
 
 service WallService {
-  rpc getWall (GetWallRequest) returns (GetWallResponse) {};
+  rpc getWall (WallRequest) returns (WallResponse) {};
+  rpc findWall (WallRequest) returns (WallResponse) {};
   rpc getTopic (GetTopicRequest) returns (GetTopicResponse) {};
   rpc createTopic (CreateTopicRequest) returns (CreateTopicResponse) {};
   rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
@@ -13,11 +14,11 @@ service WallService {
   rpc subscribeEvent (SubscribeEventRequest) returns (SubscribeEventResponse) {};
 }
 
-message GetWallRequest {
+message WallRequest {
   SearchCriteria criteria = 1;
 }
 
-message GetWallResponse {
+message WallResponse {
   repeated Topic topics = 1;
 }
 
@@ -115,6 +116,7 @@ message SearchCriteria {
   Location location = 1;
   repeated string languages = 2;
   repeated string hashtags = 3;
+  string user_id = 4;
 }
 
 message Location {

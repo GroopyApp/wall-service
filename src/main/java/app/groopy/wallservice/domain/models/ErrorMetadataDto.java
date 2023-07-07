@@ -14,4 +14,5 @@ public class ErrorMetadataDto {
     String endDate;
     String userId;
     String targetId;
+    String parameterKey;
 }

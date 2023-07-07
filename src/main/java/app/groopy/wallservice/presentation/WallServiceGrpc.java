@@ -28,12 +28,30 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
     }
 
     @Override
-    public void getWall(WallServiceProto.GetWallRequest request, StreamObserver<WallServiceProto.GetWallResponse> responseObserver) {
-        LOGGER.info("Processing GetWallRequest {}", request);
+    public void findWall(WallServiceProto.WallRequest request, StreamObserver<WallServiceProto.WallResponse> responseObserver) {
+        LOGGER.info("Processing find WallRequest {}", request);
         try {
             SearchCriteriaDto searchCriteriaDto = presentationMapper.map(request.getCriteria());
-            responseObserver.onNext(WallServiceProto.GetWallResponse.newBuilder().addAllTopics(
-                            applicationService.get(searchCriteriaDto.toBuilder()
+            responseObserver.onNext(WallServiceProto.WallResponse.newBuilder().addAllTopics(
+                            applicationService.find(searchCriteriaDto.toBuilder()
+                                            .onlyFutureEvents(true)
+                                            .build()).stream()
+                                    .map(presentationMapper::map)
+                                    .toList())
+                    .build());
+            responseObserver.onCompleted();
+        } catch (ApplicationException e) {
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
+        }
+    }
+
+    @Override
+    public void getWall(WallServiceProto.WallRequest request, StreamObserver<WallServiceProto.WallResponse> responseObserver) {
+        LOGGER.info("Processing get WallRequest {}", request);
+        try {
+            SearchCriteriaDto searchCriteriaDto = presentationMapper.map(request.getCriteria());
+            responseObserver.onNext(WallServiceProto.WallResponse.newBuilder().addAllTopics(
+                            applicationService.getSubscribedUserTopics(searchCriteriaDto.toBuilder()
                                             .onlyFutureEvents(true)
                                             .build()).stream()
                                     .map(presentationMapper::map)

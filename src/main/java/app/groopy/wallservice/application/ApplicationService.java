@@ -29,9 +29,19 @@ public class ApplicationService {
         this.domainService = domainService;
     }
 
-    public List<TopicDto> get(SearchCriteriaDto criteria) throws ApplicationException {
+    public List<TopicDto> find(SearchCriteriaDto criteria) throws ApplicationException {
         try {
             var result = domainService.getTopicsBy(criteria);
+            LOGGER.info("returning results for get topics request: {}", result);
+            return result;
+        } catch (Exception e) {
+            throw InfrastructureExceptionResolver.resolve(e);
+        }
+    }
+
+    public List<TopicDto> getSubscribedUserTopics(SearchCriteriaDto criteria) throws ApplicationException {
+        try {
+            var result = domainService.getUserTopics(criteria);
             LOGGER.info("returning results for get topics request: {}", result);
             return result;
         } catch (Exception e) {

@@ -58,6 +58,12 @@ public class InfrastructureExceptionResolver {
                     .userId(ex.getUserId())
                     .targetId(ex.getTargetId())
                     .build());
+        } else if (e instanceof RequiredParameterException) {
+            var ex = (RequiredParameterException) e;
+            return new ApplicationBadRequestException(ErrorMetadataDto.builder()
+                    .errorDescription(e.getLocalizedMessage())
+                    .parameterKey(ex.getParameter())
+                    .build());
         }
 
         return new ApplicationException(ErrorMetadataDto.builder()

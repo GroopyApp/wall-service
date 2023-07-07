@@ -3,6 +3,8 @@ package app.groopy.wallservice.domain.services;
 import app.groopy.wallservice.domain.exceptions.EndDateIsBeforeException;
 import app.groopy.wallservice.domain.exceptions.EntityAlreadyExistsException;
 import app.groopy.wallservice.domain.exceptions.EventInThePastException;
+import app.groopy.wallservice.domain.exceptions.RequiredParameterException;
+import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
 import app.groopy.wallservice.infrastructure.models.Entity;
 import app.groopy.wallservice.infrastructure.models.EventEntity;
@@ -51,5 +53,18 @@ public class Validator {
         if (createEventRequest.getStartDate().isBefore(LocalDateTime.now())) {
             throw new EventInThePastException(createEventRequest.getStartDate());
         }
+    }
+
+    public void validateSearch(SearchCriteriaDto requestCriteria) throws RequiredParameterException {
+        if (requestCriteria.getLocation() == null) {
+            throw new RequiredParameterException("location");
+        }
+    }
+
+    public void validateUserSearch(SearchCriteriaDto requestCriteria) throws RequiredParameterException {
+        if (requestCriteria.getUserId() == null || requestCriteria.getUserId().isEmpty()) {
+            throw new RequiredParameterException("userId");
+        }
+        validateSearch(requestCriteria);
     }
 }
