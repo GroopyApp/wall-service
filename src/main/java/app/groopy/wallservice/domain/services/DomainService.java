@@ -203,8 +203,13 @@ public class DomainService {
                 });
         if (topic.getSubscribers().stream().anyMatch(userEntity ->
                 userEntity.getUserId().equals(subscribeTopicRequest.getUserId()))) {
-            topic.getSubscribers().remove(user);
-            user.getSubscribedTopics().remove(topic);
+            topic.setSubscribers(topic.getSubscribers().stream().filter(elem ->
+                    !elem.getUserId().equals(subscribeTopicRequest.getUserId())).toList());
+
+            user.setSubscribedTopics(
+                    user.getSubscribedTopics().stream()
+                            .filter(elem -> !elem.getId().equals(subscribeTopicRequest.getTopicId()))
+                            .toList());
         } else {
             topic.getSubscribers().add(user);
             user.getSubscribedTopics().add(topic);
@@ -228,8 +233,12 @@ public class DomainService {
                 });
         if (event.getParticipants().stream().anyMatch(userEntity ->
                 userEntity.getUserId().equals(subscribeEventRequest.getUserId()))) {
-            event.getParticipants().remove(user);
-            user.getSubscribedEvents().remove(event);
+            event.setParticipants(event.getParticipants().stream().filter(elem ->
+                    !elem.getUserId().equals(subscribeEventRequest.getUserId())).toList());
+            user.setSubscribedEvents(
+                    user.getSubscribedEvents().stream()
+                            .filter(elem -> !elem.getId().equals(subscribeEventRequest.getEventId()))
+                            .toList());
         } else {
             event.getParticipants().add(user);
             user.getSubscribedEvents().add(event);
