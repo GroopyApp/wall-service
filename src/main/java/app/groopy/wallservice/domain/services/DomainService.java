@@ -189,7 +189,7 @@ public class DomainService {
     }
 
     @SneakyThrows
-    public TopicDto subscribeTopic(SubscribeTopicRequestDto subscribeTopicRequest) {
+    public TopicDto updateTopicSubscription(SubscribeTopicRequestDto subscribeTopicRequest) {
         LOGGER.info("processing new topic subscription: {}", subscribeTopicRequest);
         TopicEntity topic = topicRepository.findById(subscribeTopicRequest.getTopicId())
                 .orElseThrow(() -> {
@@ -203,24 +203,18 @@ public class DomainService {
                 });
         if (topic.getSubscribers().stream().anyMatch(userEntity ->
                 userEntity.getUserId().equals(subscribeTopicRequest.getUserId()))) {
-            LOGGER.error("User with id {} is already subscribed to topic with id {}",
-                    subscribeTopicRequest.getUserId(),
-                    subscribeTopicRequest.getTopicId());
-            throw new UserAlreadySubscribedException(
-                    subscribeTopicRequest.getUserId(),
-                    subscribeTopicRequest.getTopicId(),
-                    UserAlreadySubscribedException.SubscriptionType.TOPIC);
+            topic.getSubscribers().remove(user);
+            user.getSubscribedTopics().remove(topic);
+        } else {
+            topic.getSubscribers().add(user);
+            user.getSubscribedTopics().add(topic);
         }
-
-        topic.getSubscribers().add(user);
-        user.getSubscribedTopics().add(topic);
-
         userRepository.save(user);
         return applicationMapper.map(topicRepository.save(topic));
     }
 
     @SneakyThrows
-    public EventDto subscribeEvent(SubscribeEventRequestDto subscribeEventRequest) {
+    public EventDto updateEventSubscription(SubscribeEventRequestDto subscribeEventRequest) {
         LOGGER.info("processing new event subscription: {}", subscribeEventRequest);
         EventEntity event = eventRepository.findById(subscribeEventRequest.getEventId())
                 .orElseThrow(() -> {
@@ -234,18 +228,12 @@ public class DomainService {
                 });
         if (event.getParticipants().stream().anyMatch(userEntity ->
                 userEntity.getUserId().equals(subscribeEventRequest.getUserId()))) {
-            LOGGER.error("User with id {} is already subscribed to event with id {}",
-                    subscribeEventRequest.getUserId(),
-                    subscribeEventRequest.getEventId());
-
-            throw new UserAlreadySubscribedException(
-                    subscribeEventRequest.getUserId(),
-                    subscribeEventRequest.getEventId(),
-                    UserAlreadySubscribedException.SubscriptionType.EVENT);
+            event.getParticipants().remove(user);
+            user.getSubscribedEvents().remove(event);
+        } else {
+            event.getParticipants().add(user);
+            user.getSubscribedEvents().add(event);
         }
-
-        event.getParticipants().add(user);
-        user.getSubscribedEvents().add(event);
 
         userRepository.save(user);
         return applicationMapper.map(eventRepository.save(event));

@@ -69,9 +69,9 @@ public class ApplicationService {
         }
     }
 
-    public TopicDto subscribe(SubscribeTopicRequestDto subscribeTopicRequest) throws ApplicationException {
+    public TopicDto updateSubscription(SubscribeTopicRequestDto subscribeTopicRequest) throws ApplicationException {
         try {
-            var result = domainService.subscribeTopic(subscribeTopicRequest);
+            var result = domainService.updateTopicSubscription(subscribeTopicRequest);
             LOGGER.info("returning resulting topic after subscription: {}", result);
             return result;
         } catch (Exception e) {
@@ -79,9 +79,9 @@ public class ApplicationService {
         }
     }
 
-    public EventDto subscribe(SubscribeEventRequestDto subscribeEventRequest) throws ApplicationException {
+    public EventDto updateSubscription(SubscribeEventRequestDto subscribeEventRequest) throws ApplicationException {
         try {
-            var result = domainService.subscribeEvent(subscribeEventRequest);
+            var result = domainService.updateEventSubscription(subscribeEventRequest);
             LOGGER.info("returning resulting event after subscription: {}", result);
             return result;
         } catch (Exception e) {

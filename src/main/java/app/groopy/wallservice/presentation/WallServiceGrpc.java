@@ -75,7 +75,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
         try {
             responseObserver.onNext(WallServiceProto.SubscribeTopicResponse.newBuilder()
                     .setTopic(presentationMapper.map(
-                            applicationService.subscribe(
+                            applicationService.updateSubscription(
                                     presentationMapper.map(request))
                     )).build());
             responseObserver.onCompleted();
@@ -91,7 +91,7 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
         try {
             responseObserver.onNext(WallServiceProto.SubscribeEventResponse.newBuilder()
                     .setEvent(presentationMapper.map(
-                            applicationService.subscribe(
+                            applicationService.updateSubscription(
                                     presentationMapper.map(request))
                     )).build());
             responseObserver.onCompleted();
