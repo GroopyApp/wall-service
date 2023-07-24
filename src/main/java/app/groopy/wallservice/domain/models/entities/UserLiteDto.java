@@ -10,4 +10,5 @@ public class UserLiteDto extends BasicEntityDto {
     private String name;
     private String surname;
     private String language;
+    private String photoUrl;
 }

@@ -107,8 +107,9 @@ message User {
   string phone = 6;
   string gender = 7;
   string language = 8;
-  repeated string subscribed_topics = 9;
-  repeated string subscribed_events = 10;
+  string photo_url = 9;
+  repeated string subscribed_topics = 10;
+  repeated string subscribed_events = 11;
 }
 
 message SearchCriteria {

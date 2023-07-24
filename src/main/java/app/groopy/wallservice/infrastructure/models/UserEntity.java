@@ -22,6 +22,7 @@ public class UserEntity extends Entity {
     private String phone;
     private String gender;
     private String language;
+    private String photoUrl;
     @DocumentReference(lazy = true)
     private List<TopicEntity> subscribedTopics;
     @DocumentReference(lazy = true)
