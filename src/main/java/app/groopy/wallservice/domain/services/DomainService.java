@@ -1,7 +1,11 @@
 package app.groopy.wallservice.domain.services;
 
 import app.groopy.wallservice.application.mapper.ApplicationMapper;
-import app.groopy.wallservice.domain.exceptions.*;
+import app.groopy.wallservice.domain.exceptions.EventNotFoundException;
+import app.groopy.wallservice.domain.exceptions.TopicNotFoundException;
+import app.groopy.wallservice.domain.exceptions.UserNotFoundException;
+import app.groopy.wallservice.domain.exceptions.WallNotFoundException;
+import app.groopy.wallservice.domain.models.GroupType;
 import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
@@ -123,6 +127,7 @@ public class DomainService {
 
         CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
                         .name(createTopicRequest.getName())
+                        .group(GroupType.TOPIC)
                         .uuid(identifier)
                 .build());
 
@@ -163,7 +168,7 @@ public class DomainService {
 
         CreateChatChannelResponse chatResponse = chatProviderRepository.createChannel(CreateChatChannelRequest.builder()
                 .name(topic.getName())
-                .group(createEventRequest.getName())
+                .group(GroupType.EVENT)
                 .uuid(identifier)
                 .build());
 

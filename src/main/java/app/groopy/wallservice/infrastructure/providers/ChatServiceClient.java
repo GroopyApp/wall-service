@@ -23,15 +23,12 @@ public class ChatServiceClient implements ChatProviderRepository {
     @SneakyThrows
     public CreateChatChannelResponse createChannel(CreateChatChannelRequest request) {
         try {
-            var builder = ChatServiceProto.CreateChatRoomRequest.newBuilder()
+
+            var result = chatServiceStub.createChannel(ChatServiceProto.CreateChatRoomRequest.newBuilder()
                     .setChannelName(request.getName())
-                    .setUuid(request.getUuid());
-
-            if (request.getGroup() != null) {
-                builder.setGroupName(request.getGroup());
-            }
-
-            var result = chatServiceStub.createChannel(builder.build());
+                    .setGroupName(request.getGroup().name())
+                    .setUuid(request.getUuid())
+                    .build());
 
             return CreateChatChannelResponse.builder()
                     .channelName(result.getChannelName())

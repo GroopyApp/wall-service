@@ -1,5 +1,6 @@
 package app.groopy.wallservice.infrastructure.models;
 
+import app.groopy.wallservice.domain.models.GroupType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,6 +8,6 @@ import lombok.Data;
 @Builder
 public class CreateChatChannelRequest {
     String name;
-    String group;
+    GroupType group;
     String uuid;
 }

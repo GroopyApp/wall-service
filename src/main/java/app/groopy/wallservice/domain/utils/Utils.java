@@ -7,14 +7,6 @@ import java.util.UUID;
 
 public class Utils {
 
-    public static String generateChatName(String topicName) {
-        return "chat--" + topicName.toLowerCase().replaceAll(" ", "-");
-    }
-
-    public static String generateChatGroupName(String topicName) {
-        return "group--" + topicName.toLowerCase().replaceAll(" ", "-");
-    }
-
     public static String generateUUID(CreateTopicRequestDto createTopicRequest) {
         var inputString = createTopicRequest.getWallId() +
                 createTopicRequest.getLanguage() +
