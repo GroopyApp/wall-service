@@ -2,7 +2,7 @@ spring:
   application.name: wall-service
   data:
     mongodb:
-      uri: mongodb+srv://dev-root:7zEjNdGSF6N3O9yC@expat-db.ycd6koy.mongodb.net/dev?retryWrites=true&w=majority
+      uri: mongodb+srv://${MONGO_USER}:${MONGO_PWD}@${MONGO_DB_HOST}/${MONGO_HUB}?retryWrites=true&w=majority
 
 grpc:
   server:
