@@ -3,7 +3,7 @@ services:
 
   wall-service:
     environment:
-      MONGO_DB_URI: mongodb://root:root@localhost:27017/groopy
+      MONGO_DB_URI: mongodb://root:root@localhost:27017/groopy?authSource=admin
     build: .
     ports:
       - "8070:8070"
