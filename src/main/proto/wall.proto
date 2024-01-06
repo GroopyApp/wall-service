@@ -31,12 +31,13 @@ message GetTopicResponse {
 }
 
 message CreateTopicRequest {
-  string wall_id = 1;
-  string name = 2;
-  string description = 3;
-  string image_url = 4;
-  repeated string categories = 5;
-  string language = 6;
+  string user_id = 1;
+  string wall_id = 2;
+  string name = 3;
+  string description = 4;
+  string image_url = 5;
+  repeated string categories = 6;
+  string language = 7;
 }
 
 message CreateTopicResponse {
@@ -53,13 +54,14 @@ message SubscribeTopicResponse {
 }
 
 message CreateEventRequest {
-  string topic_id = 1;
-  string name = 2;
-  string description = 3;
-  Location location = 4;
-  string image_url = 5;
-  string start_date = 6;
-  string end_date = 7;
+  string user_id = 1;
+  string topic_id = 2;
+  string name = 3;
+  string description = 4;
+  Location location = 5;
+  string image_url = 6;
+  string start_date = 7;
+  string end_date = 8;
 }
 
 message CreateEventResponse {
@@ -87,28 +89,30 @@ message PublishThreadResponse {
 
 message Topic {
   string id = 1;
-  string name = 2;
-  string description = 3;
-  string image_url = 4;
-  repeated string categories = 5;
-  string language = 6;
-  repeated Event events = 7;
-  ChatInfo chat_info = 8;
-  repeated User subscribers = 9;
-  repeated string threads = 10;
+  string publisher = 2;
+  string name = 3;
+  string description = 4;
+  string image_url = 5;
+  repeated string categories = 6;
+  string language = 7;
+  repeated Event events = 8;
+  ChatInfo chat_info = 9;
+  repeated User subscribers = 10;
+  repeated string threads = 11;
 }
 
 message Event {
   string id = 1;
-  string name = 2;
-  string description = 3;
-  Location location = 4;
-  string image_url = 5;
-  string start_date = 6;
-  string end_date = 7;
-  ChatInfo chat_info = 8;
-  repeated User participants = 9;
-  repeated string threads = 10;
+  string publisher = 2;
+  string name = 3;
+  string description = 4;
+  Location location = 5;
+  string image_url = 6;
+  string start_date = 7;
+  string end_date = 8;
+  ChatInfo chat_info = 9;
+  repeated User participants = 10;
+  repeated string threads = 11;
 }
 
 message User {

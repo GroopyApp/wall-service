@@ -8,6 +8,7 @@ import java.util.List;
 @Value
 @Builder
 public class CreateTopicRequestDto {
+    String userId;
     String wallId;
     String name;
     String description;

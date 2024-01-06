@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class CreateEventRequestDto {
+    String userId;
     String topicId;
     String name;
     String description;

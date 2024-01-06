@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Document("topic")
 public class TopicEntity extends ThreadableEntity {
+    String publisher;
     String name;
     String description;
     String imageUrl;

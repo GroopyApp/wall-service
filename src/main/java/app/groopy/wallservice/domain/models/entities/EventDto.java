@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @SuperBuilder
 public class EventDto extends ThreadableDto {
+    String publisher;
     String name;
     String description;
     LocalDateTime startDate;

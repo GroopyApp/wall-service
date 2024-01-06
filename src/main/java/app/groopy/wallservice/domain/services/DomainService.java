@@ -130,6 +130,7 @@ public class DomainService {
                 .build());
 
         TopicEntity topic = topicRepository.save(TopicEntity.builder()
+                .publisher(createTopicRequest.getUserId())
                 .wall(wall)
                 .name(createTopicRequest.getName())
                 .description(createTopicRequest.getDescription())
@@ -172,6 +173,7 @@ public class DomainService {
                 .build());
 
         EventEntity event = eventRepository.save(EventEntity.builder()
+                        .publisher(createEventRequest.getUserId())
                         .topic(topic)
                         .identifier(identifier)
                         .chatInfo(ChatInfo.builder()

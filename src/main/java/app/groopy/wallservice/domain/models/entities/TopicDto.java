@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @SuperBuilder
 public class TopicDto extends ThreadableDto {
+    String publisher;
     String name;
     String description;
     String imageUrl;
