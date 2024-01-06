@@ -13,7 +13,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @Document("topic")
-public class TopicEntity extends Entity {
+public class TopicEntity extends ThreadableEntity {
     String name;
     String description;
     String imageUrl;

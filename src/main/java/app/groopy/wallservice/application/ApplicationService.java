@@ -1,13 +1,11 @@
 package app.groopy.wallservice.application;
 
+import app.groopy.protobuf.WallServiceProto;
 import app.groopy.wallservice.application.exceptions.ApplicationException;
 import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
-import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
+import app.groopy.wallservice.domain.models.requests.*;
 import app.groopy.wallservice.domain.resolver.InfrastructureExceptionResolver;
 import app.groopy.wallservice.domain.services.DomainService;
 import org.slf4j.Logger;
@@ -84,6 +82,15 @@ public class ApplicationService {
             var result = domainService.updateEventSubscription(subscribeEventRequest);
             LOGGER.info("returning resulting event after subscription: {}", result);
             return result;
+        } catch (Exception e) {
+            throw InfrastructureExceptionResolver.resolve(e);
+        }
+    }
+
+    public void publishThread(PublishThreadRequestDto request) throws ApplicationException {
+        try {
+            domainService.publishThread(request);
+            LOGGER.info("thread published successfully: {}", request);
         } catch (Exception e) {
             throw InfrastructureExceptionResolver.resolve(e);
         }

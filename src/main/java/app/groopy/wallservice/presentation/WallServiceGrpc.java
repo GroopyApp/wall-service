@@ -116,4 +116,18 @@ public class WallServiceGrpc extends app.groopy.protobuf.WallServiceGrpc.WallSer
             responseObserver.onError(ApplicationExceptionResolver.resolve(e));
         }
     }
+
+    @Override
+    public void publishThread(WallServiceProto.PublishThreadRequest request, StreamObserver<WallServiceProto.PublishThreadResponse> responseObserver) {
+        LOGGER.info("Processing PublishThreadRequest {}", request);
+        try {
+            applicationService.publishThread(presentationMapper.map(request));
+            responseObserver.onNext(WallServiceProto.PublishThreadResponse.newBuilder()
+                    .setStatus(200).build());
+            responseObserver.onCompleted();
+        }
+        catch (ApplicationException e) {
+            responseObserver.onError(ApplicationExceptionResolver.resolve(e));
+        }
+    }
 }

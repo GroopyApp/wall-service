@@ -5,10 +5,7 @@ import app.groopy.wallservice.domain.models.*;
 import app.groopy.wallservice.domain.models.entities.ChatInfoDto;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
-import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
+import app.groopy.wallservice.domain.models.requests.*;
 import org.mapstruct.*;
 
 import java.time.LocalDateTime;
@@ -29,6 +26,8 @@ public interface PresentationMapper {
     SubscribeTopicRequestDto map(WallServiceProto.SubscribeTopicRequest input);
 
     SubscribeEventRequestDto map(WallServiceProto.SubscribeEventRequest input);
+
+    PublishThreadRequestDto map(WallServiceProto.PublishThreadRequest input);
 
     @Mappings({@Mapping(target = "onlyFutureEvents", ignore = true)})
     SearchCriteriaDto map(WallServiceProto.SearchCriteria input);

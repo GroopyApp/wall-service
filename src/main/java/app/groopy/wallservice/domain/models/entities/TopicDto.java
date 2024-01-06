@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-public class TopicDto extends BasicEntityDto {
+public class TopicDto extends ThreadableDto {
     String name;
     String description;
     String imageUrl;

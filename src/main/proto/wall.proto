@@ -11,6 +11,7 @@ service WallService {
   rpc createEvent (CreateEventRequest) returns (CreateEventResponse) {};
   rpc subscribeTopic (SubscribeTopicRequest) returns (SubscribeTopicResponse) {};
   rpc subscribeEvent (SubscribeEventRequest) returns (SubscribeEventResponse) {};
+  rpc publishThread (PublishThreadRequest) returns (PublishThreadResponse){};
 }
 
 message WallRequest {
@@ -74,6 +75,16 @@ message SubscribeEventResponse {
   Event event = 1;
 }
 
+message PublishThreadRequest {
+  string topic_id = 1;
+  string event_id = 2;
+  string thread_id = 3;
+}
+
+message PublishThreadResponse {
+  int32 status = 1;
+}
+
 message Topic {
   string id = 1;
   string name = 2;
@@ -84,6 +95,7 @@ message Topic {
   repeated Event events = 7;
   ChatInfo chat_info = 8;
   repeated User subscribers = 9;
+  repeated string threads = 10;
 }
 
 message Event {
@@ -96,6 +108,7 @@ message Event {
   string end_date = 7;
   ChatInfo chat_info = 8;
   repeated User participants = 9;
+  repeated string threads = 10;
 }
 
 message User {

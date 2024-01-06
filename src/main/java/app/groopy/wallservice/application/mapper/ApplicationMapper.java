@@ -9,11 +9,13 @@ import org.mapstruct.*;
 public interface ApplicationMapper {
 
     @Mappings({
-            @Mapping(target = "subscribers", source = "subscribers", qualifiedByName = "liteUser")})
+            @Mapping(target = "subscribers", source = "subscribers", qualifiedByName = "liteUser"),
+            @Mapping(target = "threads", source = "threads", qualifiedByName = "mapId")})
     TopicDto map(TopicEntity input);
 
     @Mappings({
-            @Mapping(target = "participants", source = "participants", qualifiedByName = "liteUser")})
+            @Mapping(target = "participants", source = "participants", qualifiedByName = "liteUser"),
+            @Mapping(target = "threads", source = "threads", qualifiedByName = "mapId")})
     EventDto map(EventEntity input);
 
     @Mappings({

@@ -9,10 +9,7 @@ import app.groopy.wallservice.domain.models.GroupType;
 import app.groopy.wallservice.domain.models.SearchCriteriaDto;
 import app.groopy.wallservice.domain.models.entities.EventDto;
 import app.groopy.wallservice.domain.models.entities.TopicDto;
-import app.groopy.wallservice.domain.models.requests.CreateEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.CreateTopicRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeEventRequestDto;
-import app.groopy.wallservice.domain.models.requests.SubscribeTopicRequestDto;
+import app.groopy.wallservice.domain.models.requests.*;
 import app.groopy.wallservice.domain.utils.Utils;
 import app.groopy.wallservice.infrastructure.models.*;
 import app.groopy.wallservice.infrastructure.repository.*;
@@ -22,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -144,6 +142,7 @@ public class DomainService {
                         .groupName(chatResponse.getGroupName())
                         .uuid(identifier)
                         .build())
+                .threads(new ArrayList<>())
                 .build());
         wall.getTopics().add(topic);
         wallRepository.save(wall);
@@ -187,6 +186,7 @@ public class DomainService {
                         .startDate(createEventRequest.getStartDate())
                         .endDate(createEventRequest.getEndDate())
                         .participants(new ArrayList<>())
+                        .threads(new ArrayList<>())
                 .build());
         topic.getEvents().add(event);
         topic = topicRepository.save(topic);
@@ -251,6 +251,30 @@ public class DomainService {
 
         userRepository.save(user);
         return applicationMapper.map(eventRepository.save(event));
+    }
+
+    @SneakyThrows
+    public void publishThread(PublishThreadRequestDto request) {
+        LOGGER.info("processing new thread publishing: {}", request);
+        ThreadEntity thread = ThreadEntity.builder()
+                .id(request.getThreadId())
+                .build();
+        TopicEntity topicEntity = topicRepository.findById(request.getTopicId()).orElseThrow(() -> {
+            LOGGER.error("No topic found with specific id: {}", request.getTopicId());
+            return new TopicNotFoundException(request.getTopicId());
+        });
+        if (StringUtils.hasText(request.getEventId())) {
+            EventEntity eventEntity = topicEntity.getEvents().stream().filter(event -> event.getId().equals(request.getEventId()))
+                    .findAny().orElseThrow(() -> {
+                LOGGER.error("No event found with specific id: {}", request.getEventId());
+                return new EventNotFoundException(request.getEventId());
+            });
+            eventEntity.getThreads().add(thread);
+            eventRepository.save(eventEntity);
+        } else {
+            topicEntity.getThreads().add(thread);
+            topicRepository.save(topicEntity);
+        }
     }
 
     private boolean filterBySearchCriteria(TopicEntity topic, SearchCriteriaDto requestCriteria) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder
-public class EventDto extends BasicEntityDto {
+public class EventDto extends ThreadableDto {
     String name;
     String description;
     LocalDateTime startDate;

@@ -13,8 +13,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @Document("events")
-public class EventEntity extends Entity {
-
+public class EventEntity extends ThreadableEntity {
     String name;
     String description;
     LocalDateTime startDate;
